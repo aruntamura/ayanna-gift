@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>five sixty one</title>
+<meta name="description" content="A private exhibition.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23FDF6F0'/><circle cx='16' cy='16' r='7' fill='%23B04A2F'/></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="scrollcraft.css">
+<link rel="stylesheet" href="theme.css">
+</head>
+<body class="is-locked">
+
+<!-- ═══ THE DOOR · the page's title moment ═══════════════════════════════════ -->
+<div class="door" id="door" role="dialog" aria-modal="true" aria-labelledby="door-title">
+  <div class="door__plate">
+    <p class="door__eyebrow">Closed to the public</p>
+    <h1 class="door__title" id="door-title">Members only</h1>
+    <p class="door__body" id="door-hint">Three digits. You already know them.</p>
+    <form class="door__form" id="door-form" novalidate>
+      <div class="door__field">
+        <label class="u-sr" for="door-input">Door code, three digits</label>
+        <input class="door__input" id="door-input" type="text" inputmode="numeric"
+               autocomplete="off" autocorrect="off" spellcheck="false"
+               maxlength="3" aria-describedby="door-msg">
+        <div class="door__pips" aria-hidden="true">
+          <div class="door__pip"></div><div class="door__pip"></div><div class="door__pip"></div>
+        </div>
+      </div>
+      <button class="door__go" type="submit">Let me in</button>
+    </form>
+    <p class="door__msg" id="door-msg" role="status" aria-live="polite"></p>
+  </div>
+</div>
+
+<span data-sc-progress></span>
+<div class="sc-grain" aria-hidden="true"></div>
+
+<!-- ═══ CHROME · an index of objects, and it jumps ═══════════════════════════ -->
+<header class="chrome">
+  <p class="chrome__mark" id="mark">five <span>sixty one</span></p>
+  <button class="chrome__btn" id="tab-collection" aria-current="true">Collection</button>
+  <button class="chrome__btn" id="tab-puzzle">Puzzle room</button>
+  <button class="chrome__btn" id="index-toggle" aria-expanded="false" aria-controls="index">Index</button>
+</header>
+
+<nav class="index" id="index" aria-label="Index of objects" hidden>
+  <p class="index__title">Index</p>
+  <ul class="index__list">
+    <li><button class="index__link" data-jump="room-i"><span class="index__num">I</span> The vestibule <span class="index__count">1</span></button></li>
+    <li><button class="index__link" data-jump="room-ii"><span class="index__num">II</span> The long wall <span class="index__count">6</span></button></li>
+    <li><button class="index__link" data-jump="room-iii"><span class="index__num">III</span> The vitrine <span class="index__count">3</span></button></li>
+    <li><button class="index__link" data-jump="room-iv"><span class="index__num">IV</span> The salon wall <span class="index__count">7</span></button></li>
+    <li><button class="index__link" data-jump="room-v"><span class="index__num">V</span> The principal work <span class="index__count">1</span></button></li>
+    <li><button class="index__link" data-jump="puzzle"><span class="index__num">VI</span> The puzzle room <span class="index__count">22</span></button></li>
+  </ul>
+</nav>
+
+<main>
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     THE COLLECTION
+     Grounds are painted per room rather than drifted: several acts here can be
+     part-way through at once, which is exactly when drift shows a colour the
+     visitor already walked past. A room boundary is a doorway, not a fade.
+     ═══════════════════════════════════════════════════════════════════════════ -->
+<div class="view view--collection" id="view-collection">
+
+  <!-- ── ROOM I · the vestibule. Object one, already in view, already labelled.
+          No hero claim: the collection starts at the top of the page. ──────── -->
+  <section class="room room--i" id="room-i" data-sc-act="flow">
+    <div class="vestibule__planes" aria-hidden="true">
+      <div class="plane plane--bloom" data-sc-parallax="-0.55"></div>
+      <div class="plane plane--far"   data-sc-parallax="-0.85"></div>
+      <div class="plane plane--mid"   data-sc-parallax="0.3"></div>
+    </div>
+    <div class="vestibule">
+      <div class="vestibule__object" data-objects="I"></div>
+      <div class="vestibule__plate">
+        <p class="vestibule__room">Room I &middot; The vestibule</p>
+        <div data-plates="I"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ROOM II · the long wall. Lateral travel reads as breadth. ─────────── -->
+  <section class="room room--ii" id="room-ii" data-sc-act="pan" data-sc-span="7.5">
+    <div data-sc-stage class="wall">
+      <div class="wall__rail" id="wall-rail" data-sc-pan="0.05">
+        <div class="rail__head">
+          <p class="rail__eyebrow">Room II</p>
+          <h2>The long wall</h2>
+          <p>It keeps going. Keep scrolling and the wall keeps arriving.</p>
+        </div>
+        <!-- objects injected here -->
+        <div class="rail__tail">
+          <p>And that is only one wall.</p>
+          <p>Through the doorway, a case with three small things in it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ROOM III · the vitrine. Authored silence: near-still by design. ───── -->
+  <section class="room room--iii" id="room-iii" data-sc-act="pin" data-sc-span="3.4">
+    <div data-sc-stage class="vitrine">
+      <div class="vitrine__case" aria-hidden="true"></div>
+      <div class="vitrine__objs" data-objects="III"></div>
+    </div>
+  </section>
+
+  <!-- ── ROOM IV · the salon wall, and the loupe. ──────────────────────────── -->
+  <section class="room room--iv" id="room-iv" data-sc-act="flow">
+    <div class="salon__head">
+      <h2>The salon wall</h2>
+      <p>Hung the old way, edge to edge, too much to take in at once. There is a
+         loupe on the wall. Pick it up and drag it over anything you want to
+         look at properly.</p>
+    </div>
+    <div class="salon__stage" id="salon-stage">
+      <div class="salon" id="salon" data-objects="IV"></div>
+      <button class="loupe" id="loupe" aria-label="Loupe. Drag it over the wall, or move it with the arrow keys.">
+        <div class="loupe__inner" id="loupe-inner" aria-hidden="true"></div>
+        <div class="loupe__glare" aria-hidden="true"></div>
+      </button>
+    </div>
+  </section>
+
+  <!-- ── ROOM V · the principal work. The peak, and the longest act. ───────── -->
+  <section class="room room--v" id="room-v" data-sc-act="pin" data-sc-span="4.6">
+    <div data-sc-stage class="principal" data-objects="V"></div>
+  </section>
+
+  <!-- ── CLOSE · an inquiry plate, typeset exactly like a label. ───────────── -->
+  <section class="room room--close" id="room-close" data-sc-act="flow">
+    <div class="inquiry" data-sc-in>
+      <div class="plate">
+        <p class="plate__no">No. 19</p>
+        <p class="plate__title" id="close-title">On loan, indefinitely</p>
+        <p class="plate__meta">
+          <span>Mixed media</span>
+          <span id="close-coll">Collection of the artist</span>
+          <span>Not for sale</span>
+        </p>
+      </div>
+      <hr class="inquiry__rule">
+      <button class="inquiry__cta" id="close-cta">There is a puzzle in the next room</button>
+    </div>
+  </section>
+
+</div>
+
+<!-- ═══ ROOM VI · THE PUZZLE ROOM ═══════════════════════════════════════════ -->
+<div class="view view--puzzle" id="view-puzzle" hidden>
+  <div class="puzzle">
+    <div class="puzzle__head">
+      <p class="puzzle__eyebrow">Room VI</p>
+      <h2>The puzzle room</h2>
+      <p>Twenty two answers, all of them yours. Click a square and type. Click it
+         again to switch between across and down. It saves itself as you go.</p>
+    </div>
+    <div class="puzzle__body">
+      <div>
+        <div class="grid__scroll">
+          <div class="xw" id="xw" role="grid" aria-label="Crossword grid"></div>
+        </div>
+        <input class="xw__input" id="xw-input" inputmode="text" autocomplete="off"
+               autocorrect="off" spellcheck="false" aria-hidden="true" tabindex="-1">
+        <div class="xw__bar">
+          <button class="xw__btn" id="xw-check">Check</button>
+          <button class="xw__btn" id="xw-clear">Clear</button>
+          <p class="xw__status" id="xw-status" role="status" aria-live="polite"></p>
+        </div>
+        <div class="solved" id="xw-solved" hidden>
+          <p>That is all of them.</p>
+          <p id="xw-solved-sub">Every single one was about you.</p>
+        </div>
+      </div>
+      <div>
+        <div class="xw__current" id="xw-current">
+          <b id="xw-current-label">Across</b>
+          <span id="xw-current-clue">Pick a square to begin.</span>
+        </div>
+        <div class="clues">
+          <div>
+            <h3>Across</h3>
+            <ol id="clues-across"></ol>
+          </div>
+          <div>
+            <h3>Down</h3>
+            <ol id="clues-down"></ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+
+<script src="data/config.js"></script>
+<script src="data/photos.js"></script>
+<script src="data/puzzle.js"></script>
+<script src="scrollcraft.js"></script>
+<script src="app.js"></script>
+<script src="loupe.js"></script>
+<script src="crossword.js"></script>
+<script src="gate.js"></script>
+</body>
+</html>

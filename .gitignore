@@ -1,0 +1,9 @@
+node_modules/
+.DS_Store
+
+# verification output: the scripts in lab/ are kept, their screenshots are not
+lab/desktop/
+lab/mobile/
+lab/*.png
+lab/*.json
+lab/serve.log

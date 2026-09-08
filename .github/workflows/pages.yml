@@ -1,0 +1,49 @@
+# Deploys the site to GitHub Pages.
+#
+# NOTE: Pages does not serve private repositories on the free plan. While this
+# repo is private this workflow will not produce a working URL. It is here and
+# correct so that publishing is a single switch later: make the repo public (or
+# move the account to a paid plan), enable Pages with "GitHub Actions" as the
+# source, and this runs as is.
+name: Deploy to Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify the puzzle grid still matches the word list
+        run: |
+          node tools/build-puzzle.mjs
+          git diff --exit-code data/puzzle.js \
+            || (echo "::error::data/puzzle.js is out of date. Run node tools/build-puzzle.mjs and commit." && exit 1)
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

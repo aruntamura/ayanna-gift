@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1250" width="1000" height="1250" role="img" aria-label="Placeholder plate 18">
+  <defs>
+    <linearGradient id="g18" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EAC4B1"/><stop offset="1" stop-color="#BA7157"/>
+    </linearGradient>
+    <radialGradient id="s18" cx="56%" cy="54%" r="58%">
+      <stop offset="0" stop-color="#E7B463" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#E7B463" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="n18"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2"/>
+      <feColorMatrix type="saturate" values="0"/></filter>
+  </defs>
+  <rect width="1000" height="1250" fill="url(#g18)"/>
+  <rect width="1000" height="1250" fill="url(#s18)"/>
+  <rect width="1000" height="1250" filter="url(#n18)" opacity=".07"/>
+  <g fill="#4A2438" opacity=".30">
+    <text x="500" y="625" font-family="Georgia,serif" font-size="260"
+          text-anchor="middle" dominant-baseline="central">18</text>
+  </g>
+  <rect x="0" y="0" width="1000" height="1250" fill="none" stroke="#4A2438" stroke-opacity=".12" stroke-width="3"/>
+</svg>
