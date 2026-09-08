@@ -8,7 +8,7 @@ window.CONFIG = {
 
   /* Her name, or whatever you actually call her. Used on the closing plate and
      in the page title. Leave it as "" and the copy reads fine without it. */
-  NAME: "",
+  NAME: "Ayanna",
 
   /* The collection's name, shown in the top bar. */
   MARK: "five sixty one",
