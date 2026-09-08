@@ -9,6 +9,30 @@ const tag  = W ? 'mobile' : 'desktop';
 const out  = `lab/${tag}`;
 fs.mkdirSync(out, { recursive: true });
 
+/* The gate is cosmetic, so the tests derive the code rather than hard coding
+   it: three digits against an FNV-1a hash is a thousand tries. This keeps the
+   number out of a public repo, and it is also an honest demonstration of
+   exactly how much the door is worth. */
+async function doorCode(page) {
+  return await page.evaluate(() => {
+    const h = (s) => {
+      let x = 0x811c9dc5;
+      for (let i = 0; i < s.length; i++) {
+        x ^= s.charCodeAt(i);
+        x = (x + (x << 1) + (x << 4) + (x << 7) + (x << 8) + (x << 24)) >>> 0;
+      }
+      return x >>> 0;
+    };
+    const n = window.CONFIG.CODE_LENGTH;
+    const max = Math.pow(10, n);
+    for (let i = 0; i < max; i++) {
+      const s = String(i).padStart(n, '0');
+      if (h(s) === window.CONFIG.CODE_HASH) return s;
+    }
+    return null;
+  });
+}
+
 const browser = await chromium.launch({ executablePath: CH });
 const ctx = await browser.newContext({ viewport: size, deviceScaleFactor: 2,
   hasTouch: W, isMobile: W });
@@ -25,15 +49,19 @@ await page.waitForTimeout(900);
 await page.screenshot({ path: `${out}/00-door.png` });
 const doorVisible = await page.isVisible('#door');
 
+const CODE = await doorCode(page);
+if (!CODE) { console.error('could not derive the door code from CONFIG'); process.exit(1); }
+const WRONG = CODE === '000' ? '111' : '000';
+
 // wrong code first
-await page.fill('#door-input', '999');
+await page.fill('#door-input', WRONG);
 await page.waitForTimeout(500);
 const wrongMsg = (await page.textContent('#door-msg')).trim();
 const stillLocked = await page.isVisible('#door');
 await page.screenshot({ path: `${out}/01-door-wrong.png` });
 
 // then the real one
-await page.fill('#door-input', '561');
+await page.fill('#door-input', CODE);
 await page.waitForTimeout(1800);
 const unlocked = (await page.$('#door')) === null;
 const bodyLocked = await page.evaluate(() => document.body.classList.contains('is-locked'));
@@ -214,7 +242,7 @@ await page.reload({ waitUntil: 'load' });
 await page.waitForTimeout(700);
 // the session already went through the door, so it should reopen instantly
 const doorSkipped = (await page.$('#door')) === null;
-if (!doorSkipped) { await page.fill('#door-input', '561'); await page.waitForTimeout(1600); }
+if (!doorSkipped) { await page.fill('#door-input', CODE); await page.waitForTimeout(1600); }
 await page.click('#tab-puzzle');
 await page.waitForTimeout(400);
 const winShown = await page.isVisible('#xw-solved');
