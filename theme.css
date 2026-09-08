@@ -5,29 +5,39 @@
    ═════════════════════════════════════════════════════════════════════════════ */
 
 :root {
-  --sc-canvas:     #FDF6F0;   /* cream paper                      */
-  --sc-surface:    #F7E6DA;   /* warmer plate                     */
-  --sc-ink:        #462034;   /* deep plum, not espresso           */
-  --sc-ink-soft:   #7A5346;   /* tinted warm, 4.9:1 on the darkest ground */
-  --sc-accent:     #9C3F27;   /* terracotta, 4.9:1 on the darkest ground  */
-  --sc-accent-ink: #FDF6F0;
+  --sc-canvas:     #FDF4F1;   /* cream, with a pink cast rather than a peach one */
+  --sc-surface:    #F8E3E0;   /* warm pink plate                  */
+  --sc-ink:        #46203A;   /* deep plum                        */
+  --sc-ink-soft:   #7A4A4E;   /* warm rose brown, 5.1:1 on the darkest ground */
+  --sc-accent:     #9E3450;   /* warm rose, 4.9:1 on the darkest ground */
+  --sc-accent-ink: #FDF4F1;
 
   --sc-font-display: "Fraunces", Georgia, serif;
   --sc-font-text:    "Archivo", system-ui, sans-serif;
 
-  /* this page's own */
-  --gold:      #D8A44E;       /* one non-text role only: the bloom */
-  --blush:     #F0D3C2;
-  --clay:      #C77D5E;
-  --ground-i:   #FDF6F0;
-  --ground-ii:  #FBEEE4;
-  --ground-iii: #F6E3D6;
-  --ground-iv:  #FDF6F0;
-  --ground-v:   #F2D9C7;
-  --ground-close: #F7E6DA;
-  --shadow: 0 18px 44px -18px rgba(70, 32, 52, .34), 0 3px 10px -4px rgba(70, 32, 52, .18);
-  --shadow-lift: 0 30px 70px -22px rgba(70, 32, 52, .42), 0 4px 12px -4px rgba(70, 32, 52, .2);
-  --edge: inset 0 1px 0 rgba(255, 252, 249, .85);
+  /* This page's own. The accent is locked for the whole page, per the taste
+     floor, so the variety comes from the GROUNDS: each room sits on its own
+     hue rather than a lighter or darker version of one hue. */
+  --rose:      #D68FA6;
+  --pink:      #F6DDE4;
+  --mauve:     #B98BB2;
+  --lilac:     #EEDDEC;
+  --gold:      #D8A44E;       /* one non-text role only: the blooms */
+
+  /* One hue per room, not one hue at six lightnesses. Room III is the cool one
+     on purpose: it is the hush in the feeling curve, and a cooler ground makes
+     the visitor feel they have walked into a different room rather than the
+     same room repainted. */
+  --ground-i:     #FDF4F1;    /* cream pink  */
+  --ground-ii:    #F7EDE2;    /* warm sand   */
+  --ground-iii:   #E4DCEA;    /* dusty lilac */
+  --ground-iv:    #FCF3F4;    /* cream rose  */
+  --ground-v:     #F0D8DE;    /* rose pink   */
+  --ground-close: #F5E4E7;    /* warm pink   */
+
+  --shadow: 0 18px 44px -18px rgba(70, 32, 58, .32), 0 3px 10px -4px rgba(70, 32, 58, .17);
+  --shadow-lift: 0 30px 70px -22px rgba(70, 32, 58, .4), 0 4px 12px -4px rgba(70, 32, 58, .19);
+  --edge: inset 0 1px 0 rgba(255, 252, 251, .85);
 }
 
 /* ── utilities ───────────────────────────────────────────────────────────── */
@@ -48,12 +58,13 @@ body.is-locked { overflow: hidden; }
   display: grid; place-items: center;
   padding: var(--sc-gutter);
   background:
-    radial-gradient(120% 90% at 50% 8%, rgba(216, 164, 78, .30) 0%, rgba(216, 164, 78, 0) 58%),
-    linear-gradient(168deg, #F6DFCE 0%, #E9BCA4 52%, #D79C82 100%);
+    radial-gradient(90% 70% at 78% 12%, rgba(216, 164, 78, .26) 0%, rgba(216, 164, 78, 0) 55%),
+    radial-gradient(100% 80% at 18% 82%, rgba(185, 139, 178, .42) 0%, rgba(185, 139, 178, 0) 60%),
+    linear-gradient(168deg, #FAE7EA 0%, #EFC1CC 48%, #D2919F 100%);
 }
 .door::after {                      /* film grain, so the plate sits in a room */
   content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .4;
-  background-image: radial-gradient(rgba(70, 32, 52, .5) .5px, transparent .5px);
+  background-image: radial-gradient(rgba(70, 32, 58, .5) .5px, transparent .5px);
   background-size: 3px 3px;
 }
 .door.is-open {
@@ -70,7 +81,7 @@ body.is-locked { overflow: hidden; }
   box-shadow: var(--shadow-lift), var(--edge);
 }
 .door__plate::before {              /* the hairline a real museum plate has */
-  content: ""; position: absolute; inset: 9px; border: 1px solid rgba(70, 32, 52, .16);
+  content: ""; position: absolute; inset: 9px; border: 1px solid rgba(70, 32, 58, .16);
   border-radius: 2px; pointer-events: none;
 }
 .door__eyebrow {
@@ -98,13 +109,13 @@ body.is-locked { overflow: hidden; }
   display: grid; place-items: center;
   font-family: var(--sc-font-display); font-size: 1.9rem; color: var(--sc-ink);
   background: #FFFDFB;
-  border: 1px solid rgba(70, 32, 52, .22);
-  box-shadow: inset 0 2px 5px rgba(70, 32, 52, .07);
+  border: 1px solid rgba(70, 32, 58, .22);
+  box-shadow: inset 0 2px 5px rgba(70, 32, 58, .07);
   transition: border-color 160ms var(--sc-ease-out), box-shadow 160ms var(--sc-ease-out);
 }
 .door__pip.is-next {
   border-color: var(--sc-accent);
-  box-shadow: 0 0 0 3px rgba(156, 63, 39, .18), inset 0 2px 5px rgba(70, 32, 52, .07);
+  box-shadow: 0 0 0 3px rgba(158, 52, 80, .18), inset 0 2px 5px rgba(70, 32, 58, .07);
 }
 .door__input {
   position: absolute; inset: 0; width: 100%; height: 100%;
@@ -123,7 +134,7 @@ body.is-locked { overflow: hidden; }
   border: 0; border-radius: var(--sc-r-sm); padding: .85rem 2.1rem; cursor: pointer;
   transition: background 140ms var(--sc-ease-out), transform 110ms var(--sc-ease-out);
 }
-.door__go:hover { background: #82321E; }
+.door__go:hover { background: #85293F; }
 .door__go:active { transform: translateY(1px); }
 .door__go:focus-visible { outline: 2px solid var(--sc-ink); outline-offset: 3px; }
 .door__msg {
@@ -149,7 +160,7 @@ body.is-locked { overflow: hidden; }
   padding: var(--sc-3) var(--sc-gutter);
   background: rgba(253, 246, 240, .9);
   backdrop-filter: blur(9px);
-  border-bottom: 1px solid rgba(70, 32, 52, .1);
+  border-bottom: 1px solid rgba(70, 32, 58, .1);
 }
 .chrome__mark {
   font-family: var(--sc-font-display); font-size: 1.02rem; font-weight: 400;
@@ -179,7 +190,7 @@ body.is-locked { overflow: hidden; }
   top: 3.4rem; right: var(--sc-gutter);
   width: min(19rem, calc(100vw - 2 * var(--sc-gutter)));
   padding: var(--sc-5);
-  background: #FFFCF9; border: 1px solid rgba(70, 32, 52, .14);
+  background: #FFFCF9; border: 1px solid rgba(70, 32, 58, .14);
   border-radius: var(--sc-r-md); box-shadow: var(--shadow);
 }
 .index[hidden] { display: none; }
@@ -261,16 +272,16 @@ body.is-locked { overflow: hidden; }
    them to the viewport on phones */
 .plane { position: absolute; max-width: none; will-change: transform; }
 .plane--bloom {
-  width: min(46rem, 120vw); aspect-ratio: 1; right: -12%; top: -26%;
-  background: radial-gradient(circle, rgba(216, 164, 78, .5) 0%, rgba(216, 164, 78, 0) 66%);
+  width: min(44rem, 116vw); aspect-ratio: 1; right: -12%; top: -26%;
+  background: radial-gradient(circle, rgba(216, 164, 78, .42) 0%, rgba(216, 164, 78, 0) 66%);
 }
 .plane--far {
-  width: min(34rem, 90vw); aspect-ratio: 1; left: -14%; bottom: -30%;
-  background: radial-gradient(circle, rgba(199, 125, 94, .3) 0%, rgba(199, 125, 94, 0) 68%);
+  width: min(36rem, 94vw); aspect-ratio: 1; left: -16%; bottom: -26%;
+  background: radial-gradient(circle, rgba(185, 139, 178, .46) 0%, rgba(185, 139, 178, 0) 68%);
 }
 .plane--mid {
-  left: 0; right: 0; bottom: 0; height: 42%;
-  background: linear-gradient(180deg, rgba(240, 211, 194, 0) 0%, rgba(240, 211, 194, .72) 100%);
+  left: 0; right: 0; bottom: 0; height: 44%;
+  background: linear-gradient(180deg, rgba(246, 221, 228, 0) 0%, rgba(246, 221, 228, .78) 100%);
 }
 .vestibule__object { max-width: 34rem; justify-self: start; }
 .vestibule__plate { padding-bottom: clamp(.5rem, 3vw, 2.2rem); }
@@ -285,48 +296,121 @@ body.is-locked { overflow: hidden; }
   .vestibule__plate { padding-bottom: 0; }
 }
 
-/* ═══ ROOM II · the long wall (pan) ═════════════════════════════════════════ */
+/* ═══ ROOM II · the long wall ══════════════════════════════════════════════
+   A native horizontal scroll region, not a scroll-driven pan. Lateral travel
+   still reads as breadth, which is the point of the device, but the visitor
+   drives it with the gesture that already means "sideways" instead of having
+   their vertical wheel reinterpreted. It also costs the page about six
+   viewport-heights, which the wall was spending on travel rather than content.
+   ═════════════════════════════════════════════════════════════════════════════ */
 
-.room--ii { background: var(--ground-ii); }
-.wall { display: flex; align-items: center; overflow: hidden; }
-.wall__rail {
-  display: flex; align-items: center; gap: clamp(1.4rem, 3.6vw, 3.6rem);
-  padding-inline: var(--sc-gutter); will-change: transform;
+.room--ii {
+  background: var(--ground-ii);
+  padding-block: var(--sc-section);
 }
-/* the heading is the first rail item and the note is the last: both earn their
-   place and both add the width the pan travel needs */
-.rail__head, .rail__tail { flex: none; width: min(20rem, 68vw); }
-.rail__head h2 {
+.wall { max-width: var(--sc-maxw); margin-inline: auto; }
+.wall__head {
+  display: flex; align-items: flex-end; gap: var(--sc-5);
+  padding-inline: var(--sc-gutter); margin-bottom: var(--sc-6);
+}
+.wall__head > div:first-child { margin-right: auto; }
+.wall__head h2 {
   font-family: var(--sc-font-display); font-weight: 400;
-  font-size: clamp(1.9rem, 4vw, 3rem); line-height: 1.04;
-  letter-spacing: var(--sc-track-tight); color: var(--sc-ink); margin: 0 0 var(--sc-4);
-  text-wrap: balance;
+  font-size: clamp(1.9rem, 4.2vw, 3.1rem); line-height: 1.04;
+  letter-spacing: var(--sc-track-tight); color: var(--sc-ink);
+  margin: 0 0 var(--sc-4); text-wrap: balance;
+}
+.wall__head p {
+  font-size: .98rem; line-height: 1.62; color: var(--sc-ink-soft);
+  margin: 0; max-width: 40ch; text-wrap: pretty;
 }
 .rail__eyebrow {
   font-family: var(--sc-font-text); font-size: .7rem; font-weight: 600;
   letter-spacing: .22em; text-transform: uppercase; color: var(--sc-accent);
   margin: 0 0 var(--sc-3);
 }
-.rail__head p, .rail__tail p {
+
+.wall__nav { display: flex; gap: var(--sc-3); flex: none; }
+.wall__arrow {
+  width: 2.9rem; height: 2.9rem; display: grid; place-items: center;
+  color: var(--sc-ink); background: #FFFCFB;
+  border: 1px solid rgba(70, 32, 58, .2); border-radius: 50%; cursor: pointer;
+  transition: background 140ms var(--sc-ease-out), transform 110ms var(--sc-ease-out),
+              opacity 160ms var(--sc-ease-out);
+}
+.wall__arrow svg { width: 1.15rem; height: 1.15rem; }
+.wall__arrow:hover { background: var(--sc-surface); }
+.wall__arrow:active { transform: translateY(1px); }
+.wall__arrow:focus-visible { outline: 2px solid var(--sc-accent); outline-offset: 3px; }
+.wall__arrow[disabled] { opacity: .3; cursor: default; }
+.wall__arrow[disabled]:hover { background: #FFFCFB; }
+
+.wall__rail {
+  display: flex; align-items: flex-start;
+  gap: clamp(1.4rem, 3.6vw, 3.6rem);
+  padding-inline: var(--sc-gutter); padding-block: var(--sc-3) var(--sc-5);
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(70, 32, 58, .28) transparent;
+  cursor: grab;
+  /* Without this, injecting objects ahead of the closing note makes scroll
+     anchoring shove the rail to its far end on load. */
+  overflow-anchor: none;
+}
+.wall__rail.is-dragging { cursor: grabbing; scroll-snap-type: none; scroll-behavior: auto; }
+.wall__rail img { -webkit-user-drag: none; user-select: none; }
+/* Deliberately NOT pointer-events:none on the children while dragging. Changing
+   hit-testing mid-gesture can make the browser fire pointercancel, which kills
+   the drag; the pointer capture set on pointerdown is what keeps the gesture. */
+.wall__rail:focus-visible { outline: 2px solid var(--sc-accent); outline-offset: 4px; }
+.wall__rail::-webkit-scrollbar { height: 8px; }
+.wall__rail::-webkit-scrollbar-track { background: transparent; }
+.wall__rail::-webkit-scrollbar-thumb {
+  background: rgba(70, 32, 58, .24); border-radius: 99px;
+}
+.wall__rail::-webkit-scrollbar-thumb:hover { background: rgba(70, 32, 58, .38); }
+
+.rail__obj { flex: none; width: clamp(13rem, 24vw, 21rem); scroll-snap-align: center; }
+
+/* arrival, driven by the rail's own observer. Opacity and transform only, and
+   the floor is 0.55 rather than 0 so an object that has not settled yet reads
+   as arriving rather than as failing to load. */
+@media (prefers-reduced-motion: no-preference) {
+  .rail__enter {
+    opacity: .55; transform: translateY(12px);
+    transition: opacity 520ms var(--sc-ease-out), transform 520ms var(--sc-ease-out);
+  }
+  .rail__enter.is-in { opacity: 1; transform: none; }
+}
+/* the floor is .55, not 0, so even a total failure of the observer leaves the
+   wall readable rather than blank */
+.rail__obj .plate { margin-top: var(--sc-4); }
+/* the closing note is a rail item in its own right: it gives the wall an
+   ending rather than just running out */
+.rail__tail { flex: none; width: min(20rem, 68vw); align-self: center; scroll-snap-align: center; }
+.rail__tail p:first-child {
+  font-family: var(--sc-font-display); font-style: italic; font-size: 1.25rem;
+  color: var(--sc-ink); margin: 0 0 var(--sc-3); max-width: 22ch;
+}
+.rail__tail p {
   font-size: .95rem; line-height: 1.6; color: var(--sc-ink-soft); margin: 0;
   max-width: 28ch; text-wrap: pretty;
 }
-.rail__tail p:first-child {
-  font-family: var(--sc-font-display); font-style: italic; font-size: 1.25rem;
-  color: var(--sc-ink); margin-bottom: var(--sc-3); max-width: 22ch;
-}
-.rail__obj { flex: none; width: clamp(13rem, 24vw, 21rem); }
-.rail__obj .plate { margin-top: var(--sc-4); }
 
-/* staggered settle, driven from the act's own progress. The first object is
-   exempt so the act opens with content already present. */
-@media (prefers-reduced-motion: no-preference) {
-  .wall__rail > .rail__obj {
-    opacity: calc(.55 + .45 * clamp(0, (var(--sc-p, 0) - var(--enter, 0)) * 7, 1));
-    transform: translateY(calc(14px * (1 - clamp(0, (var(--sc-p, 0) - var(--enter, 0)) * 7, 1))));
-    transition: opacity 200ms linear;         /* opacity only: never transform */
-  }
-  .wall__rail > .rail__obj:first-of-type { opacity: 1; transform: none; }
+/* a readout, so it is obvious the wall has more of itself to the right */
+.wall__progress {
+  height: 2px; margin: 0 var(--sc-gutter);
+  background: rgba(70, 32, 58, .12); border-radius: 99px; overflow: hidden;
+}
+.wall__progress span {
+  display: block; height: 100%; width: 0;
+  background: var(--sc-accent); border-radius: 99px;
+  transition: width 120ms linear;
+}
+@media (max-width: 620px) {
+  .wall__head { flex-direction: column; align-items: flex-start; }
+  .wall__nav { order: -1; }
 }
 
 /* ═══ ROOM III · the vitrine (pin) · authored silence ═══════════════════════ */
@@ -336,10 +420,10 @@ body.is-locked { overflow: hidden; }
 /* the case is the ground: it is already there before any cue fires */
 .vitrine__case {
   position: absolute; inset: 12% var(--sc-gutter);
-  border: 1px solid rgba(70, 32, 52, .18);
+  border: 1px solid rgba(70, 32, 58, .18);
   border-radius: 3px;
-  background: linear-gradient(168deg, rgba(255, 253, 251, .72) 0%, rgba(247, 230, 218, .5) 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8), 0 24px 60px -30px rgba(70, 32, 52, .3);
+  background: linear-gradient(168deg, rgba(255, 253, 252, .72) 0%, rgba(248, 227, 224, .5) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8), 0 24px 60px -30px rgba(70, 32, 58, .3);
 }
 .vitrine__case::after {                  /* a pane of glass catching the light */
   content: ""; position: absolute; inset: 0; border-radius: 3px;
@@ -402,8 +486,8 @@ body.is-locked { overflow: hidden; }
   border-radius: 50%; overflow: hidden; cursor: grab;
   touch-action: none; padding: 0; border: 0; background: var(--sc-surface);
   box-shadow:
-    0 0 0 7px #FBF1E9, 0 0 0 8px rgba(70, 32, 52, .3),
-    0 26px 50px -18px rgba(70, 32, 52, .5), inset 0 0 34px rgba(70, 32, 52, .22);
+    0 0 0 7px #FBF1E9, 0 0 0 8px rgba(70, 32, 58, .3),
+    0 26px 50px -18px rgba(70, 32, 58, .5), inset 0 0 34px rgba(70, 32, 58, .22);
 }
 .loupe:active { cursor: grabbing; }
 .loupe:focus-visible { outline: 3px solid var(--sc-accent); outline-offset: 9px; }
@@ -450,7 +534,7 @@ body.is-locked { overflow: hidden; }
   text-align: center; max-width: min(34rem, 88vw);
   padding: var(--sc-4) var(--sc-6);
   background: #FFFCF9;
-  border: 1px solid rgba(70, 32, 52, .16); border-radius: 3px;
+  border: 1px solid rgba(70, 32, 58, .16); border-radius: 3px;
   box-shadow: var(--shadow);
 }
 .principal__plate .plate { max-width: none; }
@@ -482,7 +566,7 @@ body.is-locked { overflow: hidden; }
 }
 .inquiry::before {
   content: ""; position: absolute; inset: 9px; pointer-events: none;
-  border: 1px solid rgba(70, 32, 52, .16); border-radius: 2px;
+  border: 1px solid rgba(70, 32, 58, .16); border-radius: 2px;
 }
 .inquiry .plate { max-width: none; margin-inline: auto; }
 .inquiry .plate__title { font-size: 1.35rem; }
@@ -498,7 +582,7 @@ body.is-locked { overflow: hidden; }
   text-decoration: underline; text-underline-offset: .32em; text-decoration-thickness: 1px;
   padding: .4rem;
 }
-.inquiry__cta:hover { color: #82321E; }
+.inquiry__cta:hover { color: #85293F; }
 .inquiry__cta:focus-visible { outline: 2px solid var(--sc-accent); outline-offset: 2px; }
 
 /* ═══ THE PUZZLE ROOM ══════════════════════════════════════════════════════ */
@@ -531,20 +615,20 @@ body.is-locked { overflow: hidden; }
   /* the floor is a tap target, not a type size: below about 22px a square is
      hard to hit with a thumb */
   --cell: clamp(1.4rem, 2.6vw, 2.1rem);
-  background: rgba(70, 32, 52, .16);
+  background: rgba(70, 32, 58, .16);
   padding: 1px; border-radius: 2px; box-shadow: var(--shadow);
 }
 .xw__cell {
   position: relative; width: var(--cell); height: var(--cell);
   background: #FFFDFB; border: 0; margin: 0; padding: 0;
-  outline: 1px solid rgba(70, 32, 52, .1); outline-offset: -1px;
+  outline: 1px solid rgba(70, 32, 58, .1); outline-offset: -1px;
   font-family: var(--sc-font-text); font-size: calc(var(--cell) * .58);
   font-weight: 500; line-height: 1; color: var(--sc-ink);
   display: grid; place-items: center; cursor: pointer;
 }
 .xw__cell--block { background: transparent; outline: 0; cursor: default; }
-.xw__cell--in-entry { background: var(--blush); }
-.xw__cell--active { background: var(--gold); }
+.xw__cell--in-entry { background: var(--pink); }
+.xw__cell--active { background: var(--rose); }
 .xw__cell--wrong { color: var(--sc-accent); text-decoration: line-through; }
 .xw__cell:focus-visible { outline: 2px solid var(--sc-accent); outline-offset: -2px; z-index: 2; }
 .xw__num {
@@ -552,7 +636,7 @@ body.is-locked { overflow: hidden; }
   font-size: calc(var(--cell) * .3); line-height: 1; color: var(--sc-ink-soft);
   font-variant-numeric: tabular-nums; pointer-events: none;
 }
-.xw__cell--solved { background: #E9F0DC; }
+.xw__cell--solved { background: #DFEAD8; }
 
 .xw__input {                             /* keeps a soft keyboard available */
   position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px;
@@ -566,7 +650,7 @@ body.is-locked { overflow: hidden; }
   font-family: var(--sc-font-text); font-size: .74rem; font-weight: 600;
   letter-spacing: .14em; text-transform: uppercase;
   color: var(--sc-ink); background: #FFFDFB;
-  border: 1px solid rgba(70, 32, 52, .22); border-radius: var(--sc-r-sm);
+  border: 1px solid rgba(70, 32, 58, .22); border-radius: var(--sc-r-sm);
   padding: .58rem 1rem; cursor: pointer;
   transition: background 130ms var(--sc-ease-out), transform 100ms var(--sc-ease-out);
 }
@@ -593,7 +677,7 @@ body.is-locked { overflow: hidden; }
   font-family: var(--sc-font-text); font-size: .68rem; font-weight: 600;
   letter-spacing: .2em; text-transform: uppercase; color: var(--sc-ink-soft);
   margin: 0 0 var(--sc-4); padding-bottom: var(--sc-3);
-  border-bottom: 1px solid rgba(70, 32, 52, .14);
+  border-bottom: 1px solid rgba(70, 32, 58, .14);
 }
 .clues ol { list-style: none; margin: 0; padding: 0; }
 .clue {
@@ -603,9 +687,9 @@ body.is-locked { overflow: hidden; }
   padding: .34rem .4rem; border-radius: 3px;
 }
 .clue:hover { background: var(--sc-surface); }
-.clue[aria-current="true"] { background: var(--blush); }
+.clue[aria-current="true"] { background: var(--pink); }
 .clue:focus-visible { outline: 2px solid var(--sc-accent); outline-offset: -2px; }
-.clue.is-done { color: var(--sc-ink-soft); text-decoration: line-through; text-decoration-color: rgba(138, 97, 82, .5); }
+.clue.is-done { color: var(--sc-ink-soft); text-decoration: line-through; text-decoration-color: rgba(122, 74, 78, .5); }
 .clue__n { font-variant-numeric: tabular-nums; color: var(--sc-accent); min-width: 1.4rem; }
 
 /* solved */
@@ -625,4 +709,4 @@ body.is-locked { overflow: hidden; }
 /* light-on-dark compensation is not needed here: this page is dark-on-light */
 h1, h2, h3 { text-wrap: balance; }
 p { text-wrap: pretty; }
-::selection { background: var(--blush); color: var(--sc-ink); }
+::selection { background: var(--pink); color: var(--sc-ink); }

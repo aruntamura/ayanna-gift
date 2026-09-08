@@ -10,8 +10,9 @@ window.CONFIG = {
      in the page title. Leave it as "" and the copy reads fine without it. */
   NAME: "Ayanna",
 
-  /* The collection's name, shown in the top bar. */
-  MARK: "five sixty one",
+  /* The collection's name, shown in the top bar and in the browser tab.
+     The old name was the door code spelled out, which rather gave it away. */
+  MARK: "Permanent Collection",
 
   /* ── The door ───────────────────────────────────────────────────────────────
      The code is checked in the browser, so this is a lovely moment, NOT

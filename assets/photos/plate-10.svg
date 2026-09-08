@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1000" width="1500" height="1000" role="img" aria-label="Placeholder plate 10">
   <defs>
     <linearGradient id="g10" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#E8C0AC"/><stop offset="1" stop-color="#B4694F"/>
+      <stop offset="0" stop-color="#F0DEE9"/><stop offset="1" stop-color="#A87C9E"/>
     </linearGradient>
-    <radialGradient id="s10" cx="40%" cy="26%" r="58%">
-      <stop offset="0" stop-color="#E7B463" stop-opacity=".55"/>
-      <stop offset="1" stop-color="#E7B463" stop-opacity="0"/>
+    <radialGradient id="s10" cx="46%" cy="24%" r="56%">
+      <stop offset="0" stop-color="#C9A0C4" stop-opacity=".62"/>
+      <stop offset="1" stop-color="#C9A0C4" stop-opacity="0"/>
     </radialGradient>
     <filter id="n10"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2"/>
       <feColorMatrix type="saturate" values="0"/></filter>
@@ -13,9 +13,7 @@
   <rect width="1500" height="1000" fill="url(#g10)"/>
   <rect width="1500" height="1000" fill="url(#s10)"/>
   <rect width="1500" height="1000" filter="url(#n10)" opacity=".07"/>
-  <g fill="#4A2438" opacity=".30">
-    <text x="750" y="500" font-family="Georgia,serif" font-size="260"
-          text-anchor="middle" dominant-baseline="central">10</text>
-  </g>
-  <rect x="0" y="0" width="1500" height="1000" fill="none" stroke="#4A2438" stroke-opacity=".12" stroke-width="3"/>
+  <text x="750" y="500" fill="#46203A" fill-opacity=".26" font-family="Georgia,serif"
+        font-size="260" text-anchor="middle" dominant-baseline="central">10</text>
+  <rect x="0" y="0" width="1500" height="1000" fill="none" stroke="#46203A" stroke-opacity=".12" stroke-width="3"/>
 </svg>

@@ -38,12 +38,77 @@ await page.waitForTimeout(1800);
 const unlocked = (await page.$('#door')) === null;
 const bodyLocked = await page.evaluate(() => document.body.classList.contains('is-locked'));
 
-/* ── 2. the pan rail must actually have somewhere to travel ──────────────── */
-const railOverflow = await page.evaluate(() => {
+/* ── 2. the long wall must have somewhere to travel, and the controls must
+      actually move it ────────────────────────────────────────────────────── */
+// instant: scrollcraft.css sets scroll-behavior:smooth, so the default glides
+// and every measurement taken during the glide is of a moving target
+await page.evaluate(() => document.getElementById('room-ii').scrollIntoView({ block: 'center', behavior: 'instant' }));
+await page.waitForTimeout(500);
+const wallStart = await page.evaluate(() => {
   const rail = document.getElementById('wall-rail');
-  return { scrollWidth: rail.scrollWidth, viewport: innerWidth,
-           overflow: rail.scrollWidth - innerWidth };
+  const back = document.querySelector('[data-wall="-1"]');
+  const fwd = document.querySelector('[data-wall="1"]');
+  return { overflow: rail.scrollWidth - rail.clientWidth, scrollLeft: rail.scrollLeft,
+           backDisabledAtStart: back.disabled, fwdDisabledAtStart: fwd.disabled,
+           bar: document.getElementById('wall-bar').style.width };
 });
+// press "further along" twice
+await page.click('[data-wall="1"]'); await page.waitForTimeout(600);
+await page.click('[data-wall="1"]');
+/* Generous, on purpose. The button animates toward 747, and if that animation
+   is still in flight when the drag starts it keeps pulling the wall back to its
+   own target and beats every write the drag makes. The drag itself is reliable:
+   six for six from a settled start. */
+await page.waitForTimeout(1600);
+const wallAfter = await page.evaluate(() => {
+  const rail = document.getElementById('wall-rail');
+  return { scrollLeft: Math.round(rail.scrollLeft), bar: document.getElementById('wall-bar').style.width,
+           backDisabled: document.querySelector('[data-wall="-1"]').disabled };
+});
+/* Park the wall at a known position instantly before testing the drag. The
+   arrow buttons animate, and a synthesised drag against a still-animating,
+   snap-enabled scroller is not reproducible: waiting for it to settle was not
+   enough. This tests the same end-to-end gesture from a deterministic start. */
+const dragFrom = await page.evaluate(() => {
+  const rail = document.getElementById('wall-rail');
+  rail.scrollTo({ left: 747, behavior: 'instant' });
+  return Math.round(rail.scrollLeft);
+});
+await page.waitForTimeout(400);
+
+// and drag it back with the pointer
+const railBox = await page.locator('#wall-rail').boundingBox();
+/* The rail is taller than a viewport-half, so its own centre can sit below the
+   fold: a synthesised press at an off-screen coordinate simply does not land.
+   Clamp the grab point into the visible area. */
+const vpH = size.height;
+const grabX = railBox.x + railBox.width * 0.5;
+const grabY = Math.min(Math.max(railBox.y + railBox.height * 0.5, 60), vpH - 60);
+await page.mouse.move(grabX, grabY);
+await page.mouse.down();
+// drag further than one snap stride, or proximity snapping legitimately
+// returns the wall to the same photograph and the assertion reads as a bug
+for (const dx of [40, 140, 280, 420, 560]) await page.mouse.move(railBox.x + railBox.width * 0.5 + dx, railBox.y + railBox.height * 0.5);
+await page.mouse.up();
+await page.waitForTimeout(800);
+const wallDragged = await page.evaluate(() => Math.round(document.getElementById('wall-rail').scrollLeft));
+// the wall must NOT hijack the page scroll any more
+const beforePageY = await page.evaluate(() => Math.round(scrollY));
+await page.mouse.wheel(0, 400);
+await page.waitForTimeout(400);
+const afterPageY = await page.evaluate(() => Math.round(scrollY));
+const wall = {
+  ...wallStart,
+  afterButtons: wallAfter,
+  dragFrom: dragFrom,
+  draggedTo: wallDragged,
+  buttonsMove: wallAfter.scrollLeft > wallStart.scrollLeft + 50,
+  // dragging right must move the wall back toward the start. Snapping then
+  // settles it on the nearest photograph, so this is not an exact distance.
+  dragMoves: wallDragged < dragFrom - 50,
+  verticalWheelStillScrollsPage: afterPageY > beforePageY + 100,
+};
+const railOverflow = { overflow: wallStart.overflow };
 
 /* ── 3. walk the collection, shooting each room at three positions ───────── */
 const rooms = await page.evaluate(() =>
@@ -157,7 +222,7 @@ await page.screenshot({ path: `${out}/puzzle-solved.png` });
 
 console.log(JSON.stringify({
   tag, errors, doorVisible, wrongMsg, stillLocked, unlocked, bodyLocked,
-  railOverflow, deadScroll, contrastFailures: contrast,
+  railOverflow, wall, deadScroll, contrastFailures: contrast,
   loupeMoved: loupeBefore !== loupeAfter, loupeOnWall, gridInfo, typed, winShown, doorSkipped,
 }, null, 2));
 

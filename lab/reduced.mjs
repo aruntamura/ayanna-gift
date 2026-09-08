@@ -9,18 +9,18 @@ await p.waitForTimeout(700);
 await p.fill('#door-input','561'); await p.waitForTimeout(1800);
 const doorGone=(await p.$('#door'))===null;
 
-// the pan rail is NAVIGATION, not decoration: under reduced motion the engine
-// turns the stage into a native scroll region, so the items must stay reachable
+// the long wall is NAVIGATION, not decoration: under reduced motion its
+// objects must still be fully reachable and never sit faded
 await p.evaluate(()=>document.getElementById('room-ii').scrollIntoView());
 await p.waitForTimeout(600);
 const rail = await p.evaluate(()=>{
-  const stage=document.querySelector('#room-ii [data-sc-stage]');
   const rail=document.getElementById('wall-rail');
-  const objs=rail.querySelectorAll('.rail__obj');
-  const last=objs[objs.length-1].getBoundingClientRect();
-  return { overflowX:getComputedStyle(stage).overflowX,
-           stageScrollW:stage.scrollWidth, stageClientW:stage.clientWidth,
-           lastObjReachable: stage.scrollWidth>=rail.scrollWidth-4, objs:objs.length };
+  const objs=[...rail.querySelectorAll('.rail__obj')];
+  return { overflowX:getComputedStyle(rail).overflowX,
+           overflow: rail.scrollWidth-rail.clientWidth,
+           objs:objs.length,
+           anyFaded: objs.filter(o=>+getComputedStyle(o).opacity<0.99).length,
+           fwdEnabled: !document.querySelector('[data-wall="1"]').disabled };
 });
 await p.screenshot({path:'lab/reduced-room-ii.png'});
 

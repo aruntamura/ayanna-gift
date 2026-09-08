@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>five sixty one</title>
+<title>Permanent Collection</title>
 <meta name="description" content="A private exhibition.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23FDF6F0'/><circle cx='16' cy='16' r='7' fill='%23B04A2F'/></svg>">
@@ -44,7 +44,7 @@
 
 <!-- ═══ CHROME · an index of objects, and it jumps ═══════════════════════════ -->
 <header class="chrome">
-  <p class="chrome__mark" id="mark">five <span>sixty one</span></p>
+  <p class="chrome__mark" id="mark">Permanent <span>Collection</span></p>
   <button class="chrome__btn" id="tab-collection" aria-current="true">Collection</button>
   <button class="chrome__btn" id="tab-puzzle">Puzzle room</button>
   <button class="chrome__btn" id="index-toggle" aria-expanded="false" aria-controls="index">Index</button>
@@ -88,21 +88,39 @@
     </div>
   </section>
 
-  <!-- ── ROOM II · the long wall. Lateral travel reads as breadth. ─────────── -->
-  <section class="room room--ii" id="room-ii" data-sc-act="pan" data-sc-span="7.5">
-    <div data-sc-stage class="wall">
-      <div class="wall__rail" id="wall-rail" data-sc-pan="0.05">
-        <div class="rail__head">
+  <!-- ── ROOM II · the long wall.
+          Lateral travel still reads as breadth, but the visitor moves it
+          DIRECTLY: swipe, drag, arrow keys, or the buttons. Driving sideways
+          movement from the vertical wheel tested as disorienting, so the wall
+          no longer touches the page scroll at all. ──────────────────────────── -->
+  <section class="room room--ii" id="room-ii">
+    <div class="wall">
+      <div class="wall__head">
+        <div>
           <p class="rail__eyebrow">Room II</p>
           <h2>The long wall</h2>
-          <p>It keeps going. Keep scrolling and the wall keeps arriving.</p>
+          <p>It runs further than the screen does. Drag it, swipe it, or use the arrows.</p>
         </div>
+        <div class="wall__nav">
+          <button class="wall__arrow" type="button" data-wall="-1" aria-label="Back along the wall" aria-controls="wall-rail">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="wall__arrow" type="button" data-wall="1" aria-label="Further along the wall" aria-controls="wall-rail">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="wall__rail" id="wall-rail" tabindex="0" role="region"
+           aria-label="The long wall. Six photographs, scrolls sideways.">
         <!-- objects injected here -->
         <div class="rail__tail">
           <p>And that is only one wall.</p>
           <p>Through the doorway, a case with three small things in it.</p>
         </div>
       </div>
+
+      <div class="wall__progress" aria-hidden="true"><span id="wall-bar"></span></div>
     </div>
   </section>
 
