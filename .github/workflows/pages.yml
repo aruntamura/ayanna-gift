@@ -1,10 +1,19 @@
 # Deploys the site to GitHub Pages.
 #
-# NOTE: Pages does not serve private repositories on the free plan. While this
-# repo is private this workflow will not produce a working URL. It is here and
-# correct so that publishing is a single switch later: make the repo public (or
-# move the account to a paid plan), enable Pages with "GitHub Actions" as the
-# source, and this runs as is.
+# NOTE: Pages does not serve private repositories on the free plan. Enabling
+# Pages on this repo today returns:
+#
+#   422  Your current plan does not support GitHub Pages for this repository.
+#
+# So this workflow is committed but DISABLED, otherwise it fails on every push
+# at the configure-pages step and mails you about it. To publish later:
+#
+#   1. make the repo public, or move the account to a paid plan
+#   2. Settings > Pages > Source: GitHub Actions
+#   3. gh workflow enable "Deploy to Pages"
+#
+# Nothing in the workflow itself needs changing. Its puzzle-grid check already
+# passes in CI.
 name: Deploy to Pages
 
 on:
