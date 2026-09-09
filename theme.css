@@ -14,6 +14,11 @@
 
   --sc-font-display: "Fraunces", Georgia, serif;
   --sc-font-text:    "Archivo", system-ui, sans-serif;
+  /* A third face, which the taste floor calls a costume by default. It is
+     earned here: the captions are ink written ON the photographs, a content
+     voice rather than a third UI font, and they are the only thing that uses
+     it. Nothing in the chrome, headings or body is ever set in this. */
+  --font-hand:       "Caveat", "Bradley Hand", cursive;
 
   /* This page's own. The accent is locked for the whole page, per the taste
      floor, so the variety comes from the GROUNDS: each room sits on its own
@@ -85,9 +90,8 @@ body.is-locked { overflow: hidden; }
   border-radius: 2px; pointer-events: none;
 }
 .door__eyebrow {
-  font-family: var(--sc-font-text); font-size: .72rem; font-weight: 500;
-  letter-spacing: .2em; text-transform: uppercase; color: var(--sc-accent);
-  margin: 0 0 var(--sc-3);
+  font-family: var(--font-hand); font-size: 1.3rem; font-weight: 600;
+  color: var(--sc-accent); margin: 0 0 var(--sc-2); transform: rotate(-1.5deg);
 }
 .door__title {
   font-family: var(--sc-font-display); font-weight: 400;
@@ -128,10 +132,10 @@ body.is-locked { overflow: hidden; }
   outline: 2px solid var(--sc-accent); outline-offset: 3px;
 }
 .door__go {
-  font-family: var(--sc-font-text); font-size: .82rem; font-weight: 600;
-  letter-spacing: .16em; text-transform: uppercase;
+  font-family: var(--sc-font-text); font-size: .86rem; font-weight: 600;
+  letter-spacing: .04em;
   color: var(--sc-accent-ink); background: var(--sc-accent);
-  border: 0; border-radius: var(--sc-r-sm); padding: .85rem 2.1rem; cursor: pointer;
+  border: 0; border-radius: var(--sc-r-pill); padding: .85rem 2.1rem; cursor: pointer;
   transition: background 140ms var(--sc-ease-out), transform 110ms var(--sc-ease-out);
 }
 .door__go:hover { background: #85293F; }
@@ -168,8 +172,8 @@ body.is-locked { overflow: hidden; }
 }
 .chrome__mark span { color: var(--sc-accent); }
 .chrome__btn {
-  font-family: var(--sc-font-text); font-size: .72rem; font-weight: 500;
-  letter-spacing: .15em; text-transform: uppercase;
+  font-family: var(--sc-font-text); font-size: .84rem; font-weight: 500;
+  letter-spacing: .01em;
   color: var(--sc-ink-soft); background: none; border: 0; cursor: pointer;
   padding: .5rem .3rem; border-bottom: 2px solid transparent;
   transition: color 140ms var(--sc-ease-out), border-color 140ms var(--sc-ease-out);
@@ -182,7 +186,7 @@ body.is-locked { overflow: hidden; }
 @media (max-width: 620px) {
   .chrome { gap: .3rem; padding-inline: .75rem; }
   .chrome__mark { font-size: .84rem; white-space: nowrap; }
-  .chrome__btn { font-size: .64rem; letter-spacing: .09em; padding: .5rem .2rem; white-space: nowrap; }
+  .chrome__btn { font-size: .78rem; padding: .5rem .25rem; white-space: nowrap; }
 }
 
 .index {
@@ -195,9 +199,8 @@ body.is-locked { overflow: hidden; }
 }
 .index[hidden] { display: none; }
 .index__title {
-  font-family: var(--sc-font-text); font-size: .68rem; font-weight: 600;
-  letter-spacing: .2em; text-transform: uppercase; color: var(--sc-ink-soft);
-  margin: 0 0 var(--sc-4);
+  font-family: var(--font-hand); font-size: 1.3rem; font-weight: 600;
+  color: var(--sc-accent); margin: 0 0 var(--sc-3);
 }
 .index__list { list-style: none; margin: 0; padding: 0; }
 .index__list li + li { margin-top: 1px; }
@@ -219,36 +222,70 @@ body.is-locked { overflow: hidden; }
 /* ═══ VIEWS ════════════════════════════════════════════════════════════════ */
 .view[hidden] { display: none; }
 
-/* ═══ THE LABEL SCHEMA · identical for every object, no exceptions ══════════ */
-
-.plate {
-  font-family: var(--sc-font-text);
-  max-width: 30ch;
-}
-.plate__no {
-  font-family: var(--sc-font-display); font-size: .82rem; color: var(--sc-accent);
-  letter-spacing: .04em; margin: 0 0 .35rem; font-variant-numeric: tabular-nums;
-}
-.plate__title {
-  font-family: var(--sc-font-display); font-size: 1.06rem; font-weight: 400;
-  font-style: italic; line-height: 1.25; color: var(--sc-ink); margin: 0 0 .3rem;
-}
-.plate__meta {
-  font-size: .78rem; line-height: 1.55; color: var(--sc-ink-soft); margin: 0;
-}
-.plate__meta span { display: block; }
-
-/* ═══ THE OBJECT · a hung print ════════════════════════════════════════════ */
+/* ═══ THE PHOTOS ═══════════════════════════════════════════════════════════
+   Prints, not exhibits. Deep white border with the weight at the bottom the
+   way an instant photo has it, a caption written into that bottom margin, a
+   piece of tape, and a small tilt that is deterministic per photo rather than
+   random, so the wall does not reshuffle itself on every reload.
+   ═════════════════════════════════════════════════════════════════════════════ */
 
 .object { margin: 0; }
+
 .object__frame {
   display: block; position: relative;
-  background: #FFFDFB; padding: clamp(.5rem, 1.1vw, .85rem);
-  border-radius: 2px; box-shadow: var(--shadow), var(--edge);
+  background: #FFFCFA;
+  padding: clamp(.55rem, 1.1vw, .8rem);
+  padding-bottom: clamp(2.6rem, 4.4vw, 3.4rem);
+  border-radius: 2px;
+  box-shadow: var(--shadow), var(--edge);
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform 260ms var(--sc-ease-out), box-shadow 260ms var(--sc-ease-out);
 }
 .object__frame img {
-  display: block; width: 100%; height: auto;   /* both, or neither: see taste.md */
+  display: block; width: 100%; height: auto;
   border-radius: 1px;
+}
+
+/* a strip of tape, alternating corner so the wall does not look stamped out */
+.object__frame::before {
+  content: ""; position: absolute; z-index: 2;
+  top: -.55rem; left: 12%;
+  width: clamp(2.6rem, 5vw, 4rem); height: clamp(.9rem, 1.6vw, 1.25rem);
+  background: rgba(214, 143, 166, .38);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .5);
+  transform: rotate(-4deg);
+}
+.object:nth-child(even) .object__frame::before { left: auto; right: 12%; transform: rotate(5deg); }
+
+/* straighten and lift when she goes to look at one */
+@media (hover: hover) and (pointer: fine) {
+  .object__frame:hover {
+    transform: rotate(0deg) translateY(-5px) scale(1.012);
+    box-shadow: var(--shadow-lift), var(--edge);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .object__frame { transition: none; }
+  .object__frame:hover { transform: rotate(var(--tilt, 0deg)); }
+}
+
+/* ── the caption, written into the bottom margin ─────────────────────────── */
+.cap {
+  position: absolute; left: 0; right: 0;
+  bottom: clamp(.5rem, 1.1vw, .85rem);
+  padding-inline: clamp(.9rem, 2vw, 1.3rem);
+  display: flex; align-items: baseline; gap: .55rem;
+}
+.cap__text {
+  font-family: var(--font-hand); font-weight: 600;
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem); line-height: 1.15;
+  color: var(--sc-ink); margin: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.cap__when {
+  font-family: var(--font-hand); font-weight: 400;
+  font-size: clamp(.9rem, 1.2vw, 1.05rem); line-height: 1.15;
+  color: var(--sc-accent); margin: 0 0 0 auto; flex: none;
 }
 
 /* ═══ ROOM I · the vestibule ════════════════════════════════════════════════ */
@@ -286,9 +323,18 @@ body.is-locked { overflow: hidden; }
 .vestibule__object { max-width: 34rem; justify-self: start; }
 .vestibule__plate { padding-bottom: clamp(.5rem, 3vw, 2.2rem); }
 .vestibule__room {
-  font-family: var(--sc-font-text); font-size: .7rem; font-weight: 600;
-  letter-spacing: .22em; text-transform: uppercase; color: var(--sc-ink-soft);
-  margin: 0 0 var(--sc-4);
+  font-family: var(--font-hand); font-size: 1.25rem; font-weight: 600;
+  color: var(--sc-accent); margin: 0 0 var(--sc-3); transform: rotate(-1.5deg);
+}
+.vestibule__hed {
+  font-family: var(--sc-font-display); font-weight: 400;
+  font-size: clamp(2rem, 4.4vw, 3.2rem); line-height: 1.02;
+  letter-spacing: var(--sc-track-tight); color: var(--sc-ink);
+  margin: 0 0 var(--sc-4); text-wrap: balance;
+}
+.vestibule__sub {
+  font-size: .98rem; line-height: 1.6; color: var(--sc-ink-soft);
+  margin: 0; max-width: 32ch; text-wrap: pretty;
 }
 @media (max-width: 800px) {
   .vestibule { grid-template-columns: 1fr; align-items: start; gap: var(--sc-5); }
@@ -325,9 +371,8 @@ body.is-locked { overflow: hidden; }
   margin: 0; max-width: 40ch; text-wrap: pretty;
 }
 .rail__eyebrow {
-  font-family: var(--sc-font-text); font-size: .7rem; font-weight: 600;
-  letter-spacing: .22em; text-transform: uppercase; color: var(--sc-accent);
-  margin: 0 0 var(--sc-3);
+  font-family: var(--font-hand); font-size: 1.25rem; font-weight: 600;
+  color: var(--sc-accent); margin: 0 0 var(--sc-2); transform: rotate(-1.2deg);
 }
 
 .wall__nav { display: flex; gap: var(--sc-3); flex: none; }
@@ -390,8 +435,9 @@ body.is-locked { overflow: hidden; }
    ending rather than just running out */
 .rail__tail { flex: none; width: min(20rem, 68vw); align-self: center; scroll-snap-align: center; }
 .rail__tail p:first-child {
-  font-family: var(--sc-font-display); font-style: italic; font-size: 1.25rem;
+  font-family: var(--font-hand); font-weight: 600; font-size: 1.7rem;
   color: var(--sc-ink); margin: 0 0 var(--sc-3); max-width: 22ch;
+  transform: rotate(-1deg);
 }
 .rail__tail p {
   font-size: .95rem; line-height: 1.6; color: var(--sc-ink-soft); margin: 0;
@@ -417,13 +463,18 @@ body.is-locked { overflow: hidden; }
 
 .room--iii { background: var(--ground-iii); }
 .vitrine { display: grid; place-items: center; padding: var(--sc-gutter); }
+.vitrine__hed {
+  position: absolute; top: clamp(2.5rem, 8vh, 6rem); left: 50%;
+  transform: translateX(-50%) rotate(-1.5deg); z-index: 2;
+  font-family: var(--font-hand); font-weight: 600; font-size: 1.9rem;
+  color: var(--sc-ink-soft); margin: 0; white-space: nowrap;
+}
 /* the case is the ground: it is already there before any cue fires */
+/* a soft mat to set them on, rather than a glass case */
 .vitrine__case {
-  position: absolute; inset: 12% var(--sc-gutter);
-  border: 1px solid rgba(70, 32, 58, .18);
-  border-radius: 3px;
-  background: linear-gradient(168deg, rgba(255, 253, 252, .72) 0%, rgba(248, 227, 224, .5) 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8), 0 24px 60px -30px rgba(70, 32, 58, .3);
+  position: absolute; inset: 16% var(--sc-gutter);
+  border-radius: 14px;
+  background: radial-gradient(70% 60% at 50% 40%, rgba(255, 253, 252, .8) 0%, rgba(255, 253, 252, 0) 72%);
 }
 .vitrine__case::after {                  /* a pane of glass catching the light */
   content: ""; position: absolute; inset: 0; border-radius: 3px;
@@ -435,7 +486,7 @@ body.is-locked { overflow: hidden; }
   display: grid; gap: var(--sc-5); justify-items: center; text-align: center;
   width: min(23rem, 76vw);
 }
-.vitrine__obj .plate { max-width: 28ch; }
+
 
 /* ═══ ROOM IV · the salon wall + the loupe ══════════════════════════════════ */
 
@@ -446,6 +497,7 @@ body.is-locked { overflow: hidden; }
   padding-block: var(--sc-7) var(--sc-section);
 }
 .salon__head { max-width: var(--sc-maxw); margin: 0 auto var(--sc-7); padding-inline: var(--sc-gutter); }
+.salon__hand { font-family: var(--font-hand); }
 .salon__head h2 {
   font-family: var(--sc-font-display); font-weight: 400;
   font-size: clamp(1.9rem, 4.2vw, 3.1rem); line-height: 1.04;
@@ -523,25 +575,17 @@ body.is-locked { overflow: hidden; }
   background: #FFFDFB; padding: clamp(.6rem, 1.4vw, 1.1rem);
   border-radius: 2px; box-shadow: var(--shadow-lift), var(--edge);
   /* the print is the ground: present from p = 0, and it settles as she scrolls */
-  transform: scale(calc(.94 + .06 * clamp(0, var(--sc-p, 0) * 2.4, 1)));
+  transform: rotate(var(--tilt, 0deg)) scale(calc(.94 + .06 * clamp(0, var(--sc-p, 0) * 2.4, 1)));
 }
 .principal__frame img {
   display: block; width: auto; height: auto;
   max-width: min(68vw, 50rem); max-height: 58svh;
   border-radius: 1px;
 }
-.principal__plate {
-  text-align: center; max-width: min(34rem, 88vw);
-  padding: var(--sc-4) var(--sc-6);
-  background: #FFFCF9;
-  border: 1px solid rgba(70, 32, 58, .16); border-radius: 3px;
-  box-shadow: var(--shadow);
-}
-.principal__plate .plate { max-width: none; }
+.principal__plate { text-align: center; max-width: min(34rem, 88vw); }
 .principal__kicker {
-  font-family: var(--sc-font-text); font-size: .68rem; font-weight: 600;
-  letter-spacing: .22em; text-transform: uppercase; color: var(--sc-accent);
-  margin: 0 0 var(--sc-3);
+  font-family: var(--font-hand); font-weight: 600; font-size: 1.9rem;
+  color: var(--sc-accent); margin: 0; transform: rotate(-1.4deg);
 }
 @media (max-width: 720px) {
   .principal__frame img { max-width: 80vw; max-height: 48svh; }
@@ -550,7 +594,7 @@ body.is-locked { overflow: hidden; }
   .principal__frame { transform: none; }
 }
 
-/* ═══ CLOSE · the inquiry plate, typeset exactly like a label ═══════════════ */
+/* ═══ THE NOTE AT THE END ══════════════════════════════════════════════════ */
 
 .room--close {
   background: var(--ground-close);
@@ -559,40 +603,50 @@ body.is-locked { overflow: hidden; }
   padding-block: var(--sc-7);
 }
 .inquiry {
-  max-width: 34rem; margin-inline: auto; padding: clamp(1.8rem, 4vw, 2.8rem);
-  padding-inline: max(var(--sc-gutter), clamp(1.8rem, 4vw, 2.8rem));
+  max-width: 32rem; margin-inline: auto;
+  padding: clamp(2rem, 4.5vw, 3rem) clamp(1.6rem, 4vw, 2.6rem);
   text-align: center; position: relative;
-  background: #FFFCF9; border-radius: 3px; box-shadow: var(--shadow), var(--edge);
+  background: #FFFCFA; border-radius: 3px;
+  box-shadow: var(--shadow), var(--edge);
+  transform: rotate(-1deg);
 }
-.inquiry::before {
-  content: ""; position: absolute; inset: 9px; pointer-events: none;
-  border: 1px solid rgba(70, 32, 58, .16); border-radius: 2px;
+.inquiry::before {                       /* tape, same as the photographs */
+  content: ""; position: absolute; z-index: 2;
+  top: -.6rem; left: 50%;
+  width: clamp(3rem, 6vw, 4.6rem); height: clamp(1rem, 1.8vw, 1.35rem);
+  background: rgba(214, 143, 166, .38);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .5);
+  transform: translateX(-50%) rotate(-3deg);
 }
-.inquiry .plate { max-width: none; margin-inline: auto; }
-.inquiry .plate__title { font-size: 1.35rem; }
-.inquiry__rule {
-  width: 2.2rem; height: 1px; background: var(--sc-accent);
-  margin: var(--sc-4) auto var(--sc-3); border: 0;
+.inquiry__hand {
+  font-family: var(--font-hand); font-weight: 600;
+  font-size: clamp(2rem, 5vw, 2.9rem); line-height: 1.1;
+  color: var(--sc-ink); margin: 0 0 var(--sc-3); text-wrap: balance;
+}
+.inquiry__sub {
+  font-family: var(--font-hand); font-size: 1.4rem;
+  color: var(--sc-ink-soft); margin: 0 0 var(--sc-6);
 }
 .inquiry__cta {
-  display: inline-block; margin-top: var(--sc-5); text-wrap: balance;
+  display: inline-block;
   font-family: var(--sc-font-text); font-size: .82rem; font-weight: 600;
-  letter-spacing: .16em; text-transform: uppercase;
-  color: var(--sc-accent); background: none; border: 0; cursor: pointer;
-  text-decoration: underline; text-underline-offset: .32em; text-decoration-thickness: 1px;
-  padding: .4rem;
+  letter-spacing: .1em;
+  color: var(--sc-accent-ink); background: var(--sc-accent);
+  border: 0; border-radius: var(--sc-r-pill); cursor: pointer;
+  padding: .8rem 1.6rem;
+  transition: background 140ms var(--sc-ease-out), transform 110ms var(--sc-ease-out);
 }
-.inquiry__cta:hover { color: #85293F; }
-.inquiry__cta:focus-visible { outline: 2px solid var(--sc-accent); outline-offset: 2px; }
+.inquiry__cta:hover { background: #85293F; transform: translateY(-1px); }
+.inquiry__cta:active { transform: translateY(1px); }
+.inquiry__cta:focus-visible { outline: 2px solid var(--sc-ink); outline-offset: 3px; }
 
 /* ═══ THE PUZZLE ROOM ══════════════════════════════════════════════════════ */
 
 .puzzle { padding: 5rem var(--sc-gutter) var(--sc-9); }
 .puzzle__head { max-width: var(--sc-maxw); margin: 0 auto var(--sc-7); }
 .puzzle__eyebrow {
-  font-family: var(--sc-font-text); font-size: .7rem; font-weight: 600;
-  letter-spacing: .22em; text-transform: uppercase; color: var(--sc-accent);
-  margin: 0 0 var(--sc-3);
+  font-family: var(--font-hand); font-size: 1.3rem; font-weight: 600;
+  color: var(--sc-accent); margin: 0 0 var(--sc-2); transform: rotate(-1.2deg);
 }
 .puzzle__head h2 {
   font-family: var(--sc-font-display); font-weight: 400;

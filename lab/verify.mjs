@@ -176,9 +176,18 @@ const contrast = await page.evaluate(() => {
     return [253,246,240];
   };
   const out = [];
-  const sel = '.plate__title,.plate__meta,.plate__no,.salon__head p,.salon__head h2,' +
-              '.rail__head h2,.rail__head p,.rail__tail p,.chrome__btn,.index__link,' +
-              '.clue,.xw__btn,.puzzle__head p,.inquiry__cta,.door__body,.door__title';
+  let checked = 0;
+  const sel = [
+    '.cap__text', '.cap__when',                       // the handwriting
+    '.vestibule__room', '.vestibule__hed', '.vestibule__sub',
+    '.vitrine__hed', '.principal__kicker',
+    '.inquiry__hand', '.inquiry__sub', '.inquiry__cta',
+    '.rail__eyebrow', '.wall__head h2', '.wall__head p', '.rail__tail p',
+    '.salon__head p', '.salon__head h2',
+    '.chrome__btn', '.index__link', '.index__count',
+    '.clue', '.xw__btn', '.puzzle__head p', '.puzzle__eyebrow',
+    '.door__body', '.door__title', '.door__eyebrow', '.xw__status',
+  ].join(',');
   document.querySelectorAll(sel).forEach(el => {
     const cs = getComputedStyle(el);
     const fg = parse(cs.color);
@@ -186,11 +195,12 @@ const contrast = await page.evaluate(() => {
     const px = parseFloat(cs.fontSize);
     const bold = parseInt(cs.fontWeight, 10) >= 700;
     const large = px >= 24 || (px >= 18.66 && bold);
+    checked++;
     const r = ratio(fg, bgOf(el));
     const need = large ? 3 : 4.5;
     if (r < need) out.push({ sel: el.className, px: +px.toFixed(1), ratio: +r.toFixed(2), need });
   });
-  return out;
+  return { failures: out, checked: checked, matched: document.querySelectorAll(sel).length };
 });
 
 /* ── 5. the loupe ───────────────────────────────────────────────────────── */
@@ -250,7 +260,7 @@ await page.screenshot({ path: `${out}/puzzle-solved.png` });
 
 console.log(JSON.stringify({
   tag, errors, doorVisible, wrongMsg, stillLocked, unlocked, bodyLocked,
-  railOverflow, wall, deadScroll, contrastFailures: contrast,
+  railOverflow, wall, deadScroll, contrastFailures: contrast.failures, contrastChecked: contrast,
   loupeMoved: loupeBefore !== loupeAfter, loupeOnWall, gridInfo, typed, winShown, doorSkipped,
 }, null, 2));
 

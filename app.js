@@ -15,37 +15,42 @@
     });
   };
 
-  /* The label schema. Identical for every object, no exceptions: the schema is
-     what makes this a collection instead of a grid. */
-  function plate(p) {
-    return '<div class="plate">' +
-      '<p class="plate__no">No. ' + esc(p.n) + '</p>' +
-      '<p class="plate__title">' + esc(p.title) + '</p>' +
-      '<p class="plate__meta">' +
-        '<span>' + esc(p.place) + '</span>' +
-        '<span>' + esc(p.medium) + '</span>' +
-        '<span>' + esc(p.coll) + '</span>' +
-      '</p></div>';
+  /* The caption is written into the print's bottom margin, in the same shape
+     for every photo. Consistency is still what makes this read as one set
+     rather than a pile; it is just handwriting now instead of a museum label. */
+  function caption(p) {
+    if (!p.caption && !p.when) return "";
+    return '<figcaption class="cap">' +
+      (p.caption ? '<p class="cap__text">' + esc(p.caption) + '</p>' : '') +
+      (p.when ? '<p class="cap__when">' + esc(p.when) + '</p>' : '') +
+      '</figcaption>';
+  }
+
+  /* A small tilt, derived from the photo's own number rather than random, so
+     the wall does not reshuffle itself every time the page loads. */
+  function tilt(p) {
+    var n = parseInt(p.n, 10) || 0;
+    return (((n * 37) % 9) - 4) * 0.6;          // -2.4deg to +2.4deg
   }
 
   /* width and height come in pairs, or the page reflows as media arrives. */
   function frame(p) {
-    return '<span class="object__frame">' +
+    return '<span class="object__frame" style="--tilt:' + tilt(p).toFixed(2) + 'deg">' +
       '<img src="' + esc(p.src) + '" width="' + p.w + '" height="' + p.h + '" ' +
       'alt="' + esc(p.alt) + '" loading="lazy" decoding="async" draggable="false">' +
+      caption(p) +
       '</span>';
   }
 
   function object(p, cls, attrs) {
     return '<figure class="object ' + cls + '"' + (attrs || "") + '>' +
-      frame(p) + plate(p) + '</figure>';
+      frame(p) + '</figure>';
   }
 
   /* ── ROOM I · object one, already in view, already labelled ─────────────── */
   var one = byRoom("I")[0];
   document.querySelector('[data-objects="I"]').innerHTML =
     '<figure class="object">' + frame(one) + "</figure>";
-  document.querySelector('[data-plates="I"]').innerHTML = plate(one);
 
   /* ── ROOM II · the long wall. Objects go before the closing note, which is a
         rail item in its own right so the wall ends rather than just stopping.
@@ -85,16 +90,17 @@
         ' data-sc-reveal="up" data-sc-reveal-at="' + from + " " + to + '"');
     }).join("");
 
-  /* ── ROOM V · the principal work. The print is the ground: it is present at
-        p = 0 and settles as she scrolls. Only the plate is cued. ──────────── */
+  /* ── THE BIG ONE. The print is the ground: present at p = 0 and settling as
+        she scrolls. Only the note under it is cued. ───────────────────────── */
   var star = byRoom("V")[0];
   document.querySelector('[data-objects="V"]').innerHTML =
-    '<figure class="principal__frame">' +
+    '<figure class="principal__frame" style="--tilt:' + tilt(star).toFixed(2) + 'deg">' +
       '<img src="' + esc(star.src) + '" width="' + star.w + '" height="' + star.h + '" ' +
-      'alt="' + esc(star.alt) + '">' +
+      'alt="' + esc(star.alt) + '" draggable="false">' +
+      caption(star) +
     '</figure>' +
     '<div class="principal__plate" data-sc-cue="0.16 1">' +
-      '<p class="principal__kicker">The principal work</p>' + plate(star) +
+      '<p class="principal__kicker">this one especially</p>' +
     '</div>';
 
   /* ── copy that depends on the one configured name ───────────────────────── */
@@ -105,7 +111,7 @@
   }
   if (C.NAME) {
     document.title = C.MARK + " · for " + C.NAME;
-    document.getElementById("close-coll").textContent = "Collection of " + C.NAME;
+    document.getElementById("close-coll").textContent = "yours, " + C.NAME + ", obviously";
     document.getElementById("xw-solved-sub").textContent =
       "Every single one was about you, " + C.NAME + ".";
   }

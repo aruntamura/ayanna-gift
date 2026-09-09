@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Permanent Collection</title>
+<title>permanent collection</title>
 <meta name="description" content="A private exhibition.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23FDF6F0'/><circle cx='16' cy='16' r='7' fill='%23B04A2F'/></svg>">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Archivo:wght@400;500;600&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="scrollcraft.css">
 <link rel="stylesheet" href="theme.css">
@@ -20,8 +20,8 @@
 <!-- ═══ THE DOOR · the page's title moment ═══════════════════════════════════ -->
 <div class="door" id="door" role="dialog" aria-modal="true" aria-labelledby="door-title">
   <div class="door__plate">
-    <p class="door__eyebrow">Closed to the public</p>
-    <h1 class="door__title" id="door-title">Members only</h1>
+    <p class="door__eyebrow">locked, sorry</p>
+    <h1 class="door__title" id="door-title">members only</h1>
     <p class="door__body" id="door-hint">Three digits. You already know them.</p>
     <form class="door__form" id="door-form" novalidate>
       <div class="door__field">
@@ -33,7 +33,7 @@
           <div class="door__pip"></div><div class="door__pip"></div><div class="door__pip"></div>
         </div>
       </div>
-      <button class="door__go" type="submit">Let me in</button>
+      <button class="door__go" type="submit">let me in</button>
     </form>
     <p class="door__msg" id="door-msg" role="status" aria-live="polite"></p>
   </div>
@@ -44,21 +44,21 @@
 
 <!-- ═══ CHROME · an index of objects, and it jumps ═══════════════════════════ -->
 <header class="chrome">
-  <p class="chrome__mark" id="mark">Permanent <span>Collection</span></p>
-  <button class="chrome__btn" id="tab-collection" aria-current="true">Collection</button>
-  <button class="chrome__btn" id="tab-puzzle">Puzzle room</button>
-  <button class="chrome__btn" id="index-toggle" aria-expanded="false" aria-controls="index">Index</button>
+  <p class="chrome__mark" id="mark">permanent <span>collection</span></p>
+  <button class="chrome__btn" id="tab-collection" aria-current="true">photos</button>
+  <button class="chrome__btn" id="tab-puzzle">puzzle</button>
+  <button class="chrome__btn" id="index-toggle" aria-expanded="false" aria-controls="index">jump to</button>
 </header>
 
 <nav class="index" id="index" aria-label="Index of objects" hidden>
-  <p class="index__title">Index</p>
+  <p class="index__title">jump to</p>
   <ul class="index__list">
-    <li><button class="index__link" data-jump="room-i"><span class="index__num">I</span> The vestibule <span class="index__count">1</span></button></li>
-    <li><button class="index__link" data-jump="room-ii"><span class="index__num">II</span> The long wall <span class="index__count">6</span></button></li>
-    <li><button class="index__link" data-jump="room-iii"><span class="index__num">III</span> The vitrine <span class="index__count">3</span></button></li>
-    <li><button class="index__link" data-jump="room-iv"><span class="index__num">IV</span> The salon wall <span class="index__count">7</span></button></li>
-    <li><button class="index__link" data-jump="room-v"><span class="index__num">V</span> The principal work <span class="index__count">1</span></button></li>
-    <li><button class="index__link" data-jump="puzzle"><span class="index__num">VI</span> The puzzle room <span class="index__count">22</span></button></li>
+    <li><button class="index__link" data-jump="room-i">the first one <span class="index__count">1</span></button></li>
+    <li><button class="index__link" data-jump="room-ii">the long wall <span class="index__count">6</span></button></li>
+    <li><button class="index__link" data-jump="room-iii">small things <span class="index__count">3</span></button></li>
+    <li><button class="index__link" data-jump="room-iv">everything at once <span class="index__count">7</span></button></li>
+    <li><button class="index__link" data-jump="room-v">the big one <span class="index__count">1</span></button></li>
+    <li><button class="index__link" data-jump="puzzle">the puzzle <span class="index__count">22</span></button></li>
   </ul>
 </nav>
 
@@ -71,8 +71,8 @@
      ═══════════════════════════════════════════════════════════════════════════ -->
 <div class="view view--collection" id="view-collection">
 
-  <!-- ── ROOM I · the vestibule. Object one, already in view, already labelled.
-          No hero claim: the collection starts at the top of the page. ──────── -->
+  <!-- ── THE FIRST ONE · already in view, already captioned. The page starts
+          on a photograph rather than on a claim about one. ─────────────────── -->
   <section class="room room--i" id="room-i" data-sc-act="flow">
     <div class="vestibule__planes" aria-hidden="true">
       <div class="plane plane--bloom" data-sc-parallax="-0.55"></div>
@@ -82,8 +82,9 @@
     <div class="vestibule">
       <div class="vestibule__object" data-objects="I"></div>
       <div class="vestibule__plate">
-        <p class="vestibule__room">Room I &middot; The vestibule</p>
-        <div data-plates="I"></div>
+        <p class="vestibule__room">start here</p>
+        <h2 class="vestibule__hed">hi. this is all you.</h2>
+        <p class="vestibule__sub">eighteen of them, then a puzzle. keep going.</p>
       </div>
     </div>
   </section>
@@ -97,9 +98,9 @@
     <div class="wall">
       <div class="wall__head">
         <div>
-          <p class="rail__eyebrow">Room II</p>
-          <h2>The long wall</h2>
-          <p>It runs further than the screen does. Drag it, swipe it, or use the arrows.</p>
+          <p class="rail__eyebrow">the long wall</p>
+          <h2>it keeps going</h2>
+          <p>drag it, swipe it, or poke the arrows. there is more than fits.</p>
         </div>
         <div class="wall__nav">
           <button class="wall__arrow" type="button" data-wall="-1" aria-label="Back along the wall" aria-controls="wall-rail">
@@ -115,8 +116,8 @@
            aria-label="The long wall. Six photographs, scrolls sideways.">
         <!-- objects injected here -->
         <div class="rail__tail">
-          <p>And that is only one wall.</p>
-          <p>Through the doorway, a case with three small things in it.</p>
+          <p>that is the wall.</p>
+          <p>three small ones next.</p>
         </div>
       </div>
 
@@ -124,21 +125,22 @@
     </div>
   </section>
 
-  <!-- ── ROOM III · the vitrine. Authored silence: near-still by design. ───── -->
+  <!-- ── SMALL THINGS · pinned, and near-still by design. This is the quiet
+          stretch in the feeling curve, not dead scroll. ───────────────────── -->
   <section class="room room--iii" id="room-iii" data-sc-act="pin" data-sc-span="3.4">
     <div data-sc-stage class="vitrine">
+      <p class="vitrine__hed">three small ones</p>
       <div class="vitrine__case" aria-hidden="true"></div>
       <div class="vitrine__objs" data-objects="III"></div>
     </div>
   </section>
 
-  <!-- ── ROOM IV · the salon wall, and the loupe. ──────────────────────────── -->
+  <!-- ── EVERYTHING AT ONCE · the big pile, and the loupe over it. ─────────── -->
   <section class="room room--iv" id="room-iv" data-sc-act="flow">
     <div class="salon__head">
-      <h2>The salon wall</h2>
-      <p>Hung the old way, edge to edge, too much to take in at once. There is a
-         loupe on the wall. Pick it up and drag it over anything you want to
-         look at properly.</p>
+      <h2>everything at once</h2>
+      <p>too many to look at properly, so here is a magnifying glass. drag it
+         over whichever one you want a closer look at.</p>
     </div>
     <div class="salon__stage" id="salon-stage">
       <div class="salon" id="salon" data-objects="IV"></div>
@@ -149,25 +151,17 @@
     </div>
   </section>
 
-  <!-- ── ROOM V · the principal work. The peak, and the longest act. ───────── -->
+  <!-- ── THE BIG ONE · the peak, and the longest act on the page. ──────────── -->
   <section class="room room--v" id="room-v" data-sc-act="pin" data-sc-span="4.6">
     <div data-sc-stage class="principal" data-objects="V"></div>
   </section>
 
-  <!-- ── CLOSE · an inquiry plate, typeset exactly like a label. ───────────── -->
+  <!-- ── THE NOTE AT THE END ────────────────────────────────────────────────── -->
   <section class="room room--close" id="room-close" data-sc-act="flow">
     <div class="inquiry" data-sc-in>
-      <div class="plate">
-        <p class="plate__no">No. 19</p>
-        <p class="plate__title" id="close-title">On loan, indefinitely</p>
-        <p class="plate__meta">
-          <span>Mixed media</span>
-          <span id="close-coll">Collection of the artist</span>
-          <span>Not for sale</span>
-        </p>
-      </div>
-      <hr class="inquiry__rule">
-      <button class="inquiry__cta" id="close-cta">There is a puzzle in the next room</button>
+      <p class="inquiry__hand">on loan, indefinitely</p>
+      <p class="inquiry__sub" id="close-coll">yours, obviously</p>
+      <button class="inquiry__cta" id="close-cta">there is a puzzle &rarr;</button>
     </div>
   </section>
 
@@ -177,10 +171,10 @@
 <div class="view view--puzzle" id="view-puzzle" hidden>
   <div class="puzzle">
     <div class="puzzle__head">
-      <p class="puzzle__eyebrow">Room VI</p>
-      <h2>The puzzle room</h2>
-      <p>Twenty two answers, all of them yours. Click a square and type. Click it
-         again to switch between across and down. It saves itself as you go.</p>
+      <p class="puzzle__eyebrow">the puzzle</p>
+      <h2>twenty two things about you</h2>
+      <p>click a square and type. click it again to flip between across and
+         down. it saves itself, so you can wander off.</p>
     </div>
     <div class="puzzle__body">
       <div>

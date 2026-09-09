@@ -12,7 +12,7 @@ window.CONFIG = {
 
   /* The collection's name, shown in the top bar and in the browser tab.
      The old name was the door code spelled out, which rather gave it away. */
-  MARK: "Permanent Collection",
+  MARK: "permanent collection",
 
   /* ── The door ───────────────────────────────────────────────────────────────
      The code is checked in the browser, so this is a lovely moment, NOT
@@ -29,13 +29,13 @@ window.CONFIG = {
   CODE_LENGTH: 3,
 
   /* Shown under the door's heading. Keep it a nudge, not the answer. */
-  DOOR_HINT: "Three digits. You already know them.",
+  DOOR_HINT: "three digits. you know them.",
 
   /* Wrong-guess replies, in order. The last one repeats after that. */
   DOOR_WRONG: [
-    "Not it. Try the obvious one.",
-    "Still no. Think smaller.",
-    "It is three digits and you know them.",
-    "I can do this all day.",
+    "nope. try the obvious one.",
+    "still no. think smaller.",
+    "it is three digits and you know them.",
+    "i can do this all day.",
   ],
 };
