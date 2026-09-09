@@ -235,7 +235,6 @@ body.is-locked { overflow: hidden; }
   display: block; position: relative;
   background: #FFFCFA;
   padding: clamp(.55rem, 1.1vw, .8rem);
-  padding-bottom: clamp(2.6rem, 4.4vw, 3.4rem);
   border-radius: 2px;
   box-shadow: var(--shadow), var(--edge);
   transform: rotate(var(--tilt, 0deg));
@@ -269,18 +268,21 @@ body.is-locked { overflow: hidden; }
   .object__frame:hover { transform: rotate(var(--tilt, 0deg)); }
 }
 
-/* ── the caption, written into the bottom margin ─────────────────────────── */
+/* ── the caption, in the print's bottom margin ───────────────────────────────
+   In normal flow rather than absolutely positioned. A fixed padding-bottom on
+   the frame is a magic number that has to guess the caption's height, and it
+   guessed wrong the moment one wrapped to two lines: the words sat on top of
+   the photograph. Letting the caption occupy real space cannot overlap, and it
+   means a long caption grows the margin instead of being truncated. */
 .cap {
-  position: absolute; left: 0; right: 0;
-  bottom: clamp(.5rem, 1.1vw, .85rem);
-  padding-inline: clamp(.9rem, 2vw, 1.3rem);
   display: flex; align-items: baseline; gap: .55rem;
+  padding: clamp(.7rem, 1.4vw, 1rem) clamp(.2rem, .5vw, .4rem) clamp(.15rem, .4vw, .3rem);
 }
 .cap__text {
   font-family: var(--font-hand); font-weight: 600;
-  font-size: clamp(1.05rem, 1.5vw, 1.3rem); line-height: 1.15;
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem); line-height: 1.2;
   color: var(--sc-ink); margin: 0;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  text-wrap: pretty;
 }
 .cap__when {
   font-family: var(--font-hand); font-weight: 400;
@@ -488,7 +490,7 @@ body.is-locked { overflow: hidden; }
 }
 
 
-/* ═══ ROOM IV · the salon wall + the loupe ══════════════════════════════════ */
+/* ═══ EVERYTHING AT ONCE · the big pile ═════════════════════════════════════ */
 
 .room--iv {
   background: var(--ground-iv);
@@ -532,31 +534,6 @@ body.is-locked { overflow: hidden; }
   .salon__obj:nth-child(2), .salon__obj:nth-child(7) { grid-column: span 2; }
 }
 
-/* the loupe: a real object you pick up, not a replaced cursor */
-.loupe {
-  position: fixed; z-index: 30; width: 12.5rem; height: 12.5rem;
-  border-radius: 50%; overflow: hidden; cursor: grab;
-  touch-action: none; padding: 0; border: 0; background: var(--sc-surface);
-  box-shadow:
-    0 0 0 7px #FBF1E9, 0 0 0 8px rgba(70, 32, 58, .3),
-    0 26px 50px -18px rgba(70, 32, 58, .5), inset 0 0 34px rgba(70, 32, 58, .22);
-}
-.loupe:active { cursor: grabbing; }
-.loupe:focus-visible { outline: 3px solid var(--sc-accent); outline-offset: 9px; }
-.loupe__inner { position: absolute; top: 0; left: 0; transform-origin: 0 0; pointer-events: none; }
-/* nothing in the copy is display:none: the copy has to keep the original's
-   exact layout, or the magnified view slides out of register. Magnifying the
-   labels is the point anyway, they are deliberately small. */
-.loupe__glare {
-  position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
-  background: linear-gradient(128deg, rgba(255, 255, 255, .4) 0%, rgba(255, 255, 255, .05) 30%, rgba(255, 255, 255, 0) 52%);
-}
-.loupe {
-  opacity: 1; transition: opacity 320ms var(--sc-ease-out);
-}
-.loupe.is-off { opacity: 0; pointer-events: none; }
-@media (max-width: 560px) { .loupe { width: 9rem; height: 9rem; } }
-
 /* ═══ ROOM V · the principal work (the peak) ════════════════════════════════ */
 
 .room--v { background: var(--ground-v); }
@@ -572,10 +549,20 @@ body.is-locked { overflow: hidden; }
 }
 .principal__frame {
   margin: 0; position: relative; width: fit-content;
-  background: #FFFDFB; padding: clamp(.6rem, 1.4vw, 1.1rem);
+  background: #FFFCFA;
+  padding: clamp(.6rem, 1.4vw, 1.1rem);
   border-radius: 2px; box-shadow: var(--shadow-lift), var(--edge);
   /* the print is the ground: present from p = 0, and it settles as she scrolls */
-  transform: rotate(var(--tilt, 0deg)) scale(calc(.94 + .06 * clamp(0, var(--sc-p, 0) * 2.4, 1)));
+  transform: rotate(calc(var(--tilt, 0deg) * 0.5))
+             scale(calc(.94 + .06 * clamp(0, var(--sc-p, 0) * 2.4, 1)));
+}
+.principal__frame::before {
+  content: ""; position: absolute; z-index: 2;
+  top: -.6rem; left: 50%;
+  width: clamp(3rem, 5.5vw, 4.4rem); height: clamp(1rem, 1.7vw, 1.3rem);
+  background: rgba(214, 143, 166, .38);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .5);
+  transform: translateX(-50%) rotate(-3deg);
 }
 .principal__frame img {
   display: block; width: auto; height: auto;

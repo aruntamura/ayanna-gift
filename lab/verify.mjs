@@ -203,28 +203,7 @@ const contrast = await page.evaluate(() => {
   return { failures: out, checked: checked, matched: document.querySelectorAll(sel).length };
 });
 
-/* ── 5. the loupe ───────────────────────────────────────────────────────── */
-// scroll the WALL into view, not the room: the room is mostly its own heading
-await page.evaluate(() => document.getElementById('salon').scrollIntoView({ block: 'center' }));
-await page.waitForTimeout(700);
-const loupeBefore = await page.evaluate(() => getComputedStyle(document.getElementById('loupe-inner')).transform);
-const box = await page.locator('#loupe').boundingBox();
-await page.mouse.move(box.x + box.width/2, box.y + box.height/2);
-await page.mouse.down();
-await page.mouse.move(box.x + box.width/2 + 180, box.y + box.height/2 + 60, { steps: 12 });
-await page.mouse.up();
-await page.waitForTimeout(350);
-const loupeAfter = await page.evaluate(() => getComputedStyle(document.getElementById('loupe-inner')).transform);
-// the glass must be looking at the wall, not at blank page beside it
-const loupeOnWall = await page.evaluate(() => {
-  const lens = document.getElementById('loupe').getBoundingClientRect();
-  const wall = document.getElementById('salon').getBoundingClientRect();
-  const cx = lens.left + lens.width / 2, cy = lens.top + lens.height / 2;
-  return cx > wall.left && cx < wall.right && cy > wall.top && cy < wall.bottom;
-});
-await page.screenshot({ path: `${out}/loupe.png` });
-
-/* ── 6. the puzzle ──────────────────────────────────────────────────────── */
+/* ── 5. the puzzle ──────────────────────────────────────────────────────── */
 await page.click('#tab-puzzle');
 await page.waitForTimeout(500);
 await page.screenshot({ path: `${out}/puzzle.png`, fullPage: false });
@@ -261,7 +240,7 @@ await page.screenshot({ path: `${out}/puzzle-solved.png` });
 console.log(JSON.stringify({
   tag, errors, doorVisible, wrongMsg, stillLocked, unlocked, bodyLocked,
   railOverflow, wall, deadScroll, contrastFailures: contrast.failures, contrastChecked: contrast,
-  loupeMoved: loupeBefore !== loupeAfter, loupeOnWall, gridInfo, typed, winShown, doorSkipped,
+  gridInfo, typed, winShown, doorSkipped,
 }, null, 2));
 
 await browser.close();

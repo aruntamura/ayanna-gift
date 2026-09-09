@@ -6,13 +6,19 @@
 
 window.CONFIG = {
 
-  /* Her name, or whatever you actually call her. Used on the closing plate and
-     in the page title. Leave it as "" and the copy reads fine without it. */
+  /* Who it is for. Used in the browser tab and in the puzzle's win message.
+     Leave it "" and the copy still reads fine. */
   NAME: "Ayanna",
 
+  /* Who it is from. Signs the note at the end. */
+  FROM: "Arun",
+
   /* The collection's name, shown in the top bar and in the browser tab.
-     The old name was the door code spelled out, which rather gave it away. */
-  MARK: "permanent collection",
+     Museum signage, deadpan, on a site that is nothing but photographs.
+     Alternatives in the same register if you want to swap it:
+       "please do not touch"   "recent acquisitions"   "not available for loan"
+     The very first name was the door code spelled out, which gave it away. */
+  MARK: "no photography permitted",
 
   /* ── The door ───────────────────────────────────────────────────────────────
      The code is checked in the browser, so this is a lovely moment, NOT

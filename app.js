@@ -20,10 +20,10 @@
      rather than a pile; it is just handwriting now instead of a museum label. */
   function caption(p) {
     if (!p.caption && !p.when) return "";
-    return '<figcaption class="cap">' +
+    return '<div class="cap">' +
       (p.caption ? '<p class="cap__text">' + esc(p.caption) + '</p>' : '') +
       (p.when ? '<p class="cap__when">' + esc(p.when) + '</p>' : '') +
-      '</figcaption>';
+      '</div>';
   }
 
   /* A small tilt, derived from the photo's own number rather than random, so
@@ -35,11 +35,11 @@
 
   /* width and height come in pairs, or the page reflows as media arrives. */
   function frame(p) {
-    return '<span class="object__frame" style="--tilt:' + tilt(p).toFixed(2) + 'deg">' +
+    return '<div class="object__frame" style="--tilt:' + tilt(p).toFixed(2) + 'deg">' +
       '<img src="' + esc(p.src) + '" width="' + p.w + '" height="' + p.h + '" ' +
       'alt="' + esc(p.alt) + '" loading="lazy" decoding="async" draggable="false">' +
       caption(p) +
-      '</span>';
+      '</div>';
   }
 
   function object(p, cls, attrs) {
@@ -111,9 +111,13 @@
   }
   if (C.NAME) {
     document.title = C.MARK + " · for " + C.NAME;
-    document.getElementById("close-coll").textContent = "yours, " + C.NAME + ", obviously";
     document.getElementById("xw-solved-sub").textContent =
-      "Every single one was about you, " + C.NAME + ".";
+      "every single one was about you, " + C.NAME + ".";
+  }
+  /* The note at the end is signed by whoever made this, not by whoever it is
+     for. Getting those two the same way round is the whole point of it. */
+  if (C.FROM) {
+    document.getElementById("close-coll").textContent = "yours, " + C.FROM + ", obviously";
   }
   document.getElementById("door-hint").textContent = C.DOOR_HINT;
 
