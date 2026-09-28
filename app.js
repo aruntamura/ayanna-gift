@@ -17,11 +17,21 @@
 
   /* The caption is written into the print's bottom margin, in the same shape
      for every photo. Consistency is still what makes this read as one set
-     rather than a pile; it is just handwriting now instead of a museum label. */
+     rather than a pile; it is just handwriting now instead of a museum label.
+
+     A caption still sitting on the placeholder counts as no caption. Twenty
+     prints all saying "write something here" is worse than twenty prints
+     saying nothing, and this needs no flag to remember to turn off: write a
+     real caption and it appears, on that photo only. */
+  var PLACEHOLDER = "write something here";
+  function hasCaption(p) {
+    var t = (p.caption || "").trim();
+    return t !== "" && t !== PLACEHOLDER;
+  }
   function caption(p) {
-    if (!p.caption && !p.when) return "";
+    if (!hasCaption(p)) return "";
     return '<div class="cap">' +
-      (p.caption ? '<p class="cap__text">' + esc(p.caption) + '</p>' : '') +
+      '<p class="cap__text">' + esc(p.caption) + '</p>' +
       (p.when ? '<p class="cap__when">' + esc(p.when) + '</p>' : '') +
       '</div>';
   }
@@ -35,7 +45,12 @@
 
   /* width and height come in pairs, or the page reflows as media arrives. */
   function frame(p) {
-    return '<div class="object__frame" style="--tilt:' + tilt(p).toFixed(2) + 'deg">' +
+    /* An instant photo has a deeper margin at the bottom than at the sides.
+       With no caption there is nothing to hold that space open, so the class
+       keeps the proportions rather than letting the print become a plain
+       white border. */
+    var bare = hasCaption(p) ? "" : " object__frame--bare";
+    return '<div class="object__frame' + bare + '" style="--tilt:' + tilt(p).toFixed(2) + 'deg">' +
       '<img src="' + esc(p.src) + '" width="' + p.w + '" height="' + p.h + '" ' +
       'alt="' + esc(p.alt) + '" loading="lazy" decoding="async" draggable="false">' +
       caption(p) +
@@ -92,19 +107,65 @@
 
   /* ── ROOM IV · the salon wall. A wipe per object, staggered across the act,
         so the hanging assembles as she comes down the page. ───────────────── */
-  document.getElementById("salon").innerHTML =
-    byRoom("IV").map(function (p, i) {
-      var from = (0.05 + i * 0.045).toFixed(3);
-      var to = (0.05 + i * 0.045 + 0.16).toFixed(3);
-      return object(p, "salon__obj",
-        ' data-sc-reveal="up" data-sc-reveal-at="' + from + " " + to + '"');
+  /* CSS multicol fragments a print that does not fit the remaining column, and
+     break-inside: avoid does not save an item taller than the column box: the
+     bottom of the photograph simply gets cut off. So the columns are built
+     here instead, each print going to whichever column is currently shortest,
+     measured by aspect ratio rather than by count so a stack of portraits does
+     not tower over a stack of landscapes. Nothing can be split this way. */
+  var salon = document.getElementById("salon");
+  var salonCols = 0;
+  function columnsFor(w) { return w < 560 ? 1 : w < 1000 ? 2 : 3; }
+
+  function buildSalon() {
+    var n = columnsFor(window.innerWidth);
+    if (n === salonCols) return;
+    salonCols = n;
+
+    var items = byRoom("IV");
+    var buckets = [], heights = [];
+    for (var c = 0; c < n; c++) { buckets.push([]); heights.push(0); }
+    items.forEach(function (p) {
+      var shortest = heights.indexOf(Math.min.apply(null, heights));
+      buckets[shortest].push(p);
+      heights[shortest] += (p.h / p.w);        // height at equal column width
+    });
+
+    salon.innerHTML = buckets.map(function (b) {
+      return '<div class="salon__col">' +
+        b.map(function (p) { return object(p, "salon__obj"); }).join("") +
+        '</div>';
     }).join("");
+    revealOnEnter(salon.querySelectorAll(".salon__obj"), null);
+  }
+  buildSalon();
+
+  /* Reveal-on-enter, rooted where the content is actually clipped. Used by
+     both the wall (clipped horizontally by its own scroller) and the pile
+     (clipped by the viewport). The engine's own data-sc-in is always rooted on
+     the viewport, which is wrong for the first, and it binds at mount, which
+     is wrong for anything rebuilt on resize. */
+  function revealOnEnter(els, rootEl) {
+    Array.prototype.forEach.call(els, function (el) { el.classList.add("rail__enter"); });
+    if (!("IntersectionObserver" in window)) {
+      Array.prototype.forEach.call(els, function (el) { el.classList.add("is-in"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("is-in");
+        io.unobserve(e.target);
+      });
+    }, { root: rootEl || null, threshold: 0.15 });
+    Array.prototype.forEach.call(els, function (el) { io.observe(el); });
+  }
 
   /* ── THE BIG ONE. The print is the ground: present at p = 0 and settling as
         she scrolls. Only the note under it is cued. ───────────────────────── */
   var star = byRoom("V")[0];
   document.querySelector('[data-objects="V"]').innerHTML =
-    '<figure class="principal__frame" style="--tilt:' + tilt(star).toFixed(2) + 'deg">' +
+    '<figure class="principal__frame' + (hasCaption(star) ? "" : " object__frame--bare") + '" style="--tilt:' + tilt(star).toFixed(2) + 'deg">' +
       '<img src="' + esc(star.src) + '" width="' + star.w + '" height="' + star.h + '" ' +
       'alt="' + esc(star.alt) + '" draggable="false">' +
       caption(star) +
@@ -209,7 +270,15 @@
 
   /* the door removes itself, then the engine remeasures against a page that is
      no longer behind an overlay */
-  window.addEventListener("fsx:open", function () { sc.layout(); });
+  window.addEventListener("fsx:open", function () { sc.layout(); buildSalon(); });
+
+  /* The pile is rebuilt only when the column COUNT changes, not on every
+     resize tick: rebuilding the DOM on each pixel would restart every reveal. */
+  var salonTimer = null;
+  window.addEventListener("resize", function () {
+    clearTimeout(salonTimer);
+    salonTimer = setTimeout(buildSalon, 160);
+  }, { passive: true });
 
   /* ═══ ROOM II · driving the long wall ════════════════════════════════════
      The wall is a native scroll region, so swipe, trackpad and the scrollbar
@@ -299,20 +368,14 @@
     /* Objects arrive as they are swiped into view. Rooted on the RAIL, not the
        viewport: these are clipped horizontally, and an observer rooted on the
        viewport reports the ones off to the right as visible. */
-    var seen = null;
+    var seen = false;
     function watch() {
-      if (seen || !("IntersectionObserver" in window)) return;
+      if (seen) return;
       // A root with no box intersects nothing, and the observer will not
       // re-evaluate on its own afterwards. Wait until the rail is laid out.
       if (!rail.clientWidth) return;
-      seen = new IntersectionObserver(function (es) {
-        es.forEach(function (e) {
-          if (!e.isIntersecting) return;
-          e.target.classList.add("is-in");
-          seen.unobserve(e.target);
-        });
-      }, { root: rail, threshold: 0.2 });
-      Array.prototype.forEach.call(rail.children, function (kid) { seen.observe(kid); });
+      seen = true;
+      revealOnEnter(rail.children, rail);
     }
 
     /* Neither the measurement nor the observer can run at script time: the rail

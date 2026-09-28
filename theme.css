@@ -244,6 +244,8 @@ body.is-locked { overflow: hidden; }
   display: block; width: 100%; height: auto;
   border-radius: 1px;
 }
+/* no caption to hold the bottom margin open, so hold it open directly */
+.object__frame--bare { padding-bottom: clamp(1.5rem, 2.6vw, 2.2rem); }
 
 /* a strip of tape, alternating corner so the wall does not look stamped out */
 .object__frame::before {
@@ -322,7 +324,8 @@ body.is-locked { overflow: hidden; }
   left: 0; right: 0; bottom: 0; height: 44%;
   background: linear-gradient(180deg, rgba(246, 221, 228, 0) 0%, rgba(246, 221, 228, .78) 100%);
 }
-.vestibule__object { max-width: 34rem; justify-self: start; }
+.vestibule__object { justify-self: start; }
+.vestibule__object .object__frame img { max-height: 62svh; width: auto; max-width: min(34rem, 86vw); }
 .vestibule__plate { padding-bottom: clamp(.5rem, 3vw, 2.2rem); }
 .vestibule__room {
   font-family: var(--font-hand); font-size: 1.25rem; font-weight: 600;
@@ -393,7 +396,7 @@ body.is-locked { overflow: hidden; }
 .wall__arrow[disabled]:hover { background: #FFFCFB; }
 
 .wall__rail {
-  display: flex; align-items: flex-start;
+  display: flex; align-items: center;
   gap: clamp(1.4rem, 3.6vw, 3.6rem);
   padding-inline: var(--sc-gutter); padding-block: var(--sc-3) var(--sc-5);
   overflow-x: auto; overscroll-behavior-x: contain;
@@ -418,7 +421,15 @@ body.is-locked { overflow: hidden; }
 }
 .wall__rail::-webkit-scrollbar-thumb:hover { background: rgba(70, 32, 58, .38); }
 
-.rail__obj { flex: none; width: clamp(13rem, 24vw, 21rem); scroll-snap-align: center; }
+/* Mixed orientations on one wall: hang them all to a common PICTURE HEIGHT
+   and let the width follow the shape. A fixed width instead makes a portrait
+   half again as tall as the landscape beside it and the wall reads as a
+   ragged column of different objects rather than one hang. */
+.rail__obj { flex: none; scroll-snap-align: center; }
+.rail__obj .object__frame img {
+  height: clamp(13rem, 36vh, 21rem);
+  width: auto; max-width: min(78vw, 30rem);
+}
 
 /* arrival, driven by the rail's own observer. Opacity and transform only, and
    the floor is 0.55 rather than 0 so an object that has not settled yet reads
@@ -472,21 +483,13 @@ body.is-locked { overflow: hidden; }
   color: var(--sc-ink-soft); margin: 0; white-space: nowrap;
 }
 /* the case is the ground: it is already there before any cue fires */
-/* a soft mat to set them on, rather than a glass case */
-.vitrine__case {
-  position: absolute; inset: 16% var(--sc-gutter);
-  border-radius: 14px;
-  background: radial-gradient(70% 60% at 50% 40%, rgba(255, 253, 252, .8) 0%, rgba(255, 253, 252, 0) 72%);
-}
-.vitrine__case::after {                  /* a pane of glass catching the light */
-  content: ""; position: absolute; inset: 0; border-radius: 3px;
-  background: linear-gradient(112deg, rgba(255, 255, 255, .38) 0%, rgba(255, 255, 255, 0) 34%);
-}
 .vitrine__objs { position: relative; z-index: 1; display: grid; place-items: center; }
 .vitrine__obj {
   grid-area: 1 / 1; margin: 0;
   display: grid; gap: var(--sc-5); justify-items: center; text-align: center;
-  width: min(23rem, 76vw);
+}
+.vitrine__obj .object__frame img {
+  max-height: 54svh; width: auto; max-width: min(23rem, 76vw);
 }
 
 
@@ -512,32 +515,21 @@ body.is-locked { overflow: hidden; }
 }
 .salon__stage { position: relative; max-width: var(--sc-maxw); margin-inline: auto; padding-inline: var(--sc-gutter); }
 /* an asymmetric hanging, not a grid of equal cells */
-.salon {
-  display: grid; gap: clamp(.8rem, 1.8vw, 1.6rem);
-  grid-template-columns: repeat(6, 1fr);
-  align-items: start;
-  grid-auto-flow: dense;        /* let a short item backfill a gap */
+/* Columns, not a span grid: a span grid has to guess each photo's shape and
+   leaves holes when it guesses wrong. These are real flex columns filled in
+   app.js rather than CSS multicol, because multicol fragments any print taller
+   than the column box and cuts the bottom off the photograph. */
+.salon { display: flex; align-items: flex-start; gap: clamp(.8rem, 1.8vw, 1.6rem); }
+.salon__col {
+  flex: 1 1 0; min-width: 0;
+  display: flex; flex-direction: column; gap: clamp(.8rem, 1.8vw, 1.6rem);
 }
 .salon__obj { margin: 0; }
-/* A repeating seven-item rhythm rather than seven fixed rules, so the hang
-   takes however many photos there are. Spans per group: 2+3+1, then 2+2+2,
-   then 3. Adding photos extends the pattern instead of dropping them into
-   unstyled single columns. */
-.salon__obj:nth-child(7n+1) { grid-column: span 2; margin-top: 2.4rem; }
-.salon__obj:nth-child(7n+2) { grid-column: span 3; }
-.salon__obj:nth-child(7n+3) { grid-column: span 1; margin-top: 1rem; }
-.salon__obj:nth-child(7n+4) { grid-column: span 2; }
-.salon__obj:nth-child(7n+5) { grid-column: span 2; margin-top: 3rem; }
-.salon__obj:nth-child(7n+6) { grid-column: span 2; margin-top: .6rem; }
-.salon__obj:nth-child(7n+7) { grid-column: span 3; margin-top: 1.6rem; }
+.salon__obj { margin: 0; }
 .salon__obj .plate { margin-top: var(--sc-3); }
 .salon__obj .plate__title { font-size: .92rem; }
 .salon__obj .plate__meta { font-size: .76rem; }
-@media (max-width: 720px) {
-  .salon { grid-template-columns: repeat(2, 1fr); }
-  .salon__obj:nth-child(n) { grid-column: span 1; margin-top: 0; }
-  .salon__obj:nth-child(7n+2), .salon__obj:nth-child(7n+7) { grid-column: span 2; }
-}
+
 
 /* ═══ ROOM V · the principal work (the peak) ════════════════════════════════ */
 
