@@ -516,22 +516,27 @@ body.is-locked { overflow: hidden; }
   display: grid; gap: clamp(.8rem, 1.8vw, 1.6rem);
   grid-template-columns: repeat(6, 1fr);
   align-items: start;
+  grid-auto-flow: dense;        /* let a short item backfill a gap */
 }
 .salon__obj { margin: 0; }
-.salon__obj:nth-child(1) { grid-column: span 2; margin-top: 2.4rem; }
-.salon__obj:nth-child(2) { grid-column: span 3; }
-.salon__obj:nth-child(3) { grid-column: span 1; margin-top: 1rem; }
-.salon__obj:nth-child(4) { grid-column: span 2; }
-.salon__obj:nth-child(5) { grid-column: span 2; margin-top: 3rem; }
-.salon__obj:nth-child(6) { grid-column: span 2; margin-top: .6rem; }
-.salon__obj:nth-child(7) { grid-column: span 3; margin-top: 1.6rem; }
+/* A repeating seven-item rhythm rather than seven fixed rules, so the hang
+   takes however many photos there are. Spans per group: 2+3+1, then 2+2+2,
+   then 3. Adding photos extends the pattern instead of dropping them into
+   unstyled single columns. */
+.salon__obj:nth-child(7n+1) { grid-column: span 2; margin-top: 2.4rem; }
+.salon__obj:nth-child(7n+2) { grid-column: span 3; }
+.salon__obj:nth-child(7n+3) { grid-column: span 1; margin-top: 1rem; }
+.salon__obj:nth-child(7n+4) { grid-column: span 2; }
+.salon__obj:nth-child(7n+5) { grid-column: span 2; margin-top: 3rem; }
+.salon__obj:nth-child(7n+6) { grid-column: span 2; margin-top: .6rem; }
+.salon__obj:nth-child(7n+7) { grid-column: span 3; margin-top: 1.6rem; }
 .salon__obj .plate { margin-top: var(--sc-3); }
 .salon__obj .plate__title { font-size: .92rem; }
 .salon__obj .plate__meta { font-size: .76rem; }
 @media (max-width: 720px) {
   .salon { grid-template-columns: repeat(2, 1fr); }
   .salon__obj:nth-child(n) { grid-column: span 1; margin-top: 0; }
-  .salon__obj:nth-child(2), .salon__obj:nth-child(7) { grid-column: span 2; }
+  .salon__obj:nth-child(7n+2), .salon__obj:nth-child(7n+7) { grid-column: span 2; }
 }
 
 /* ═══ ROOM V · the principal work (the peak) ════════════════════════════════ */

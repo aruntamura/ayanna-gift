@@ -74,10 +74,20 @@
   /* ── ROOM III · the vitrine. First cue greets, so the act never opens on an
         empty stage; the last cue closes at 1, because only the final act on
         the page may hold. ────────────────────────────────────────────────── */
-  var VITRINE_CUES = ["0 0.34 0", "0.28 0.66", "0.60 1"];
+  var small = byRoom("III");
   document.querySelector('[data-objects="III"]').innerHTML =
-    byRoom("III").map(function (p, i) {
-      return object(p, "vitrine__obj", ' data-sc-cue="' + VITRINE_CUES[i] + '"');
+    small.map(function (p, i) {
+      /* Cues computed for however many there are, rather than a fixed list of
+         three. The first greets, so the act never opens on an empty stage, and
+         the last closes at 1, because only the final act on the page may hold
+         a cue open. */
+      var span = 1 / small.length;
+      var from = (i * span).toFixed(3);
+      var to = Math.min(1, (i + 1) * span + span * 0.3).toFixed(3);
+      var cue = i === 0 ? "0 " + to + " 0"
+              : i === small.length - 1 ? from + " 1"
+              : from + " " + to;
+      return object(p, "vitrine__obj", ' data-sc-cue="' + cue + '"');
     }).join("");
 
   /* ── ROOM IV · the salon wall. A wipe per object, staggered across the act,
@@ -102,6 +112,26 @@
     '<div class="principal__plate" data-sc-cue="0.16 1">' +
       '<p class="principal__kicker">this one especially</p>' +
     '</div>';
+
+  /* The intro counts the photos rather than stating a number that goes stale
+     the moment more are added. */
+  var WORDS = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight",
+    "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen",
+    "seventeen", "eighteen", "nineteen", "twenty"];
+  var intro = document.getElementById("intro-count");
+  if (intro) {
+    var total = PHOTOS.length;
+    intro.textContent = (WORDS[total] || total) + " of them, then a puzzle. keep going.";
+  }
+
+  /* The index counts what is actually there, rather than repeating numbers
+     that go stale the moment more photos are added. */
+  var JUMPS = { "room-i": "I", "room-ii": "II", "room-iii": "III", "room-iv": "IV", "room-v": "V" };
+  Array.prototype.forEach.call(document.querySelectorAll("[data-jump]"), function (btn) {
+    var room = JUMPS[btn.getAttribute("data-jump")];
+    var count = btn.querySelector(".index__count");
+    if (room && count) count.textContent = byRoom(room).length;
+  });
 
   /* ── copy that depends on the one configured name ───────────────────────── */
   if (C.MARK) {
