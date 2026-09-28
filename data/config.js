@@ -18,7 +18,7 @@ window.CONFIG = {
      Alternatives in the same register if you want to swap it:
        "please do not touch"   "recent acquisitions"   "not available for loan"
      The very first name was the door code spelled out, which gave it away. */
-  MARK: "no photography permitted",
+  MARK: "on loan, indefinitely",
 
   /* ── The door ───────────────────────────────────────────────────────────────
      The code is checked in the browser, so this is a lovely moment, NOT

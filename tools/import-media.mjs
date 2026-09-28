@@ -33,8 +33,25 @@ if (!fs.existsSync(srcDir)) { console.error('no such folder: ' + srcDir); proces
 
 const MAX_EDGE = 1600;      // long edge of a web photo
 const JPEG_Q   = 80;
-const GIF_EDGE = 400;       // long edge. GIF is a heavy format, this is generous
+/* Long edge, chosen by clip length. GIF pays for every frame AND every pixel,
+   so a two second clip can afford to be sharp where an eight second one
+   cannot. Flat settings either make the short clip mushy or the long one
+   enormous. */
 const GIF_FPS  = 10;
+function gifEdge(seconds) {
+  if (seconds <= 3) return 560;
+  if (seconds <= 6) return 440;
+  return 360;
+}
+/* Palette by clip length too. A short clip can afford 256 colours and error
+   diffusion, which is what keeps smooth walls and skin from banding into
+   flat blobs. Over a long clip that costs far too much, and ordered dither
+   compresses much better frame to frame, so the long one keeps bayer. */
+function gifPalette(seconds) {
+  return seconds <= 3
+    ? { colors: 256, dither: 'floyd_steinberg' }
+    : { colors: 128, dither: 'bayer:bayer_scale=5' };
+}
 
 const IMG = /\.(heic|heif|jpg|jpeg|png|tif|tiff)$/i;
 
@@ -68,7 +85,8 @@ const whenLabel = (d) => `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
 
 /* ── existing captions, keyed by the file they came from ──────────────────── */
 const kept = new Map();
-if (fs.existsSync(dataFile)) {
+const FRESH = process.argv.includes('--redeal');   // throw away hand placement
+if (fs.existsSync(dataFile) && !FRESH) {
   /* Parse ENTRY BY ENTRY. Scanning for "from" and then the next "caption" walks
      straight into the following entry, because from is written last, and every
      caption ends up attached to the wrong photograph. Which is the one thing
@@ -77,7 +95,8 @@ if (fs.existsSync(dataFile)) {
   for (const block of prev.match(/\{[^{}]*\}/g) || []) {
     const field = (k) => (block.match(new RegExp(k + ':\\s*"((?:[^"\\\\]|\\\\.)*)"')) || [])[1];
     const from = field('from');
-    if (from) kept.set(from, { caption: field('caption') || '', when: field('when') || '' });
+    if (from) kept.set(from, { caption: field('caption') || '', when: field('when') || '',
+                               room: field('room') || '' });
   }
 }
 
@@ -136,13 +155,20 @@ for (const f of files) {
        Scaling is by LONG edge, not by width. Scaling portrait footage to a
        fixed width makes it enormously taller than the same setting makes a
        landscape clip, and GIF pays for every one of those pixels. */
-    const scale = `scale=w='if(gte(iw,ih),${GIF_EDGE},-2)':h='if(gte(iw,ih),-2,${GIF_EDGE})':flags=lanczos`;
+    let seconds = 0;
+    try {
+      seconds = parseFloat(sh('ffprobe', ['-v', 'error', '-show_entries', 'format=duration',
+        '-of', 'default=nw=1:nk=1', f.full]).trim()) || 0;
+    } catch (e) { /* fall back to the smallest */ }
+    const edge = gifEdge(seconds);
+    const pal_ = gifPalette(seconds);
+    const scale = `scale=w='if(gte(iw,ih),${edge},-2)':h='if(gte(iw,ih),-2,${edge})':flags=lanczos`;
     sh('ffmpeg', ['-v', 'error', '-y', '-i', f.full, '-vf', `fps=${GIF_FPS},${scale}`,
       '-an', '-c:v', 'libx264', '-crf', '16', '-pix_fmt', 'yuv420p', mid]);
     sh('ffmpeg', ['-v', 'error', '-y', '-i', mid,
-      '-vf', 'palettegen=max_colors=128:stats_mode=diff', pal]);
+      '-vf', `palettegen=max_colors=${pal_.colors}:stats_mode=diff`, pal]);
     sh('ffmpeg', ['-v', 'error', '-y', '-i', mid, '-i', pal,
-      '-lavfi', '[0:v][1:v]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle',
+      '-lavfi', `[0:v][1:v]paletteuse=dither=${pal_.dither}:diff_mode=rectangle`,
       '-loop', '0', outPath]);
     fs.unlinkSync(pal); fs.unlinkSync(mid);
     const probe = sh('ffprobe', ['-v', 'error', '-select_streams', 'v:0',
@@ -183,21 +209,34 @@ for (const f of files) {
   process.stdout.write(`  ${n}  ${f.name} -> ${outName}  ${w}x${h}  ${(entries[entries.length-1].bytes/1024).toFixed(0)}KB\n`);
 }
 
+/* Rooms that were moved by hand stay put. Only photos that have never been
+   placed get dealt. Otherwise adding one new photo reshuffles the whole page
+   and undoes every arrangement made since. --redeal forces a clean deal. */
+for (const e of entries) {
+  const prev = kept.get(e.from);
+  if (prev && prev.room) e.pinnedRoom = prev.room;
+}
+
 /* ── assign rooms ─────────────────────────────────────────────────────────────
    Chronological, except that "the big one" is pulled out first and is always a
    PHOTO. It is the last thing on the page and it gets a whole screen, so
    letting a two second clip land there by accident of ordering wastes it.
    Change any entry's room by hand afterwards; nothing here overwrites that. */
 const order = ['I', 'II', 'III', 'IV'];
-let big = null;
-for (let j = entries.length - 1; j >= 0; j--) {
-  if (!entries[j].isVideo) { big = entries[j]; break; }
+for (const e of entries) if (e.pinnedRoom) e.room = e.pinnedRoom;
+
+const loose = entries.filter(e => !e.room);
+if (!entries.some(e => e.room === 'V')) {
+  // the closer is always a photograph, never a clip: it gets a whole screen
+  for (let j = loose.length - 1; j >= 0; j--) {
+    if (!loose[j].isVideo) { loose[j].room = 'V'; break; }
+  }
 }
-if (big) big.room = 'V';
-const rest = entries.filter(e => e !== big);
+const rest = loose.filter(e => !e.room);
 let k = 0;
 for (const room of order) {
-  for (let c = 0; c < plan[room]; c++) { if (rest[k]) rest[k].room = room; k++; }
+  const already = entries.filter(e => e.room === room).length;
+  for (let c = already; c < plan[room]; c++) { if (rest[k]) rest[k].room = room; k++; }
 }
 for (const e of entries) if (!e.room) e.room = 'IV';
 

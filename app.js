@@ -174,26 +174,6 @@
       '<p class="principal__kicker">this one especially</p>' +
     '</div>';
 
-  /* The intro counts the photos rather than stating a number that goes stale
-     the moment more are added. */
-  var WORDS = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight",
-    "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen",
-    "seventeen", "eighteen", "nineteen", "twenty"];
-  var intro = document.getElementById("intro-count");
-  if (intro) {
-    var total = PHOTOS.length;
-    intro.textContent = (WORDS[total] || total) + " of them, then a puzzle. keep going.";
-  }
-
-  /* The index counts what is actually there, rather than repeating numbers
-     that go stale the moment more photos are added. */
-  var JUMPS = { "room-i": "I", "room-ii": "II", "room-iii": "III", "room-iv": "IV", "room-v": "V" };
-  Array.prototype.forEach.call(document.querySelectorAll("[data-jump]"), function (btn) {
-    var room = JUMPS[btn.getAttribute("data-jump")];
-    var count = btn.querySelector(".index__count");
-    if (room && count) count.textContent = byRoom(room).length;
-  });
-
   /* ── copy that depends on the one configured name ───────────────────────── */
   if (C.MARK) {
     var bits = C.MARK.split(" ");
@@ -208,7 +188,7 @@
   /* The note at the end is signed by whoever made this, not by whoever it is
      for. Getting those two the same way round is the whole point of it. */
   if (C.FROM) {
-    document.getElementById("close-coll").textContent = "yours, " + C.FROM + ", obviously";
+    document.getElementById("close-coll").textContent = "yours, " + C.FROM + " (obviously)";
   }
   document.getElementById("door-hint").textContent = C.DOOR_HINT;
 
@@ -223,50 +203,20 @@
   var tabP   = document.getElementById("tab-puzzle");
   var viewC  = document.getElementById("view-collection");
   var viewP  = document.getElementById("view-puzzle");
-  var idx    = document.getElementById("index");
-  var idxBtn = document.getElementById("index-toggle");
-
   function show(which) {
     var puzzle = which === "puzzle";
     viewP.hidden = !puzzle;
     viewC.hidden = puzzle;
     tabP.setAttribute("aria-current", String(puzzle));
     tabC.setAttribute("aria-current", String(!puzzle));
-    closeIndex();
     window.scrollTo({ top: 0, behavior: "instant" });
     // a hidden view measures as zero, so the engine remeasures on the way back
     if (!puzzle) sc.layout();
     window.dispatchEvent(new CustomEvent("fsx:view", { detail: which }));
   }
-  function closeIndex() { idx.hidden = true; idxBtn.setAttribute("aria-expanded", "false"); }
-
   tabC.addEventListener("click", function () { show("collection"); });
   tabP.addEventListener("click", function () { show("puzzle"); });
   document.getElementById("close-cta").addEventListener("click", function () { show("puzzle"); });
-
-  idxBtn.addEventListener("click", function () {
-    var open = idx.hidden;
-    idx.hidden = !open;
-    idxBtn.setAttribute("aria-expanded", String(open));
-  });
-  document.addEventListener("click", function (e) {
-    if (!idx.hidden && !idx.contains(e.target) && e.target !== idxBtn) closeIndex();
-  });
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") closeIndex();
-  });
-
-  /* the index jumps, which is what a gallery nav is for */
-  Array.prototype.forEach.call(document.querySelectorAll("[data-jump]"), function (btn) {
-    btn.addEventListener("click", function () {
-      var target = btn.getAttribute("data-jump");
-      if (target === "puzzle") { show("puzzle"); return; }
-      if (!viewP.hidden) show("collection");
-      closeIndex();
-      var el = document.getElementById(target);
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-  });
 
   /* the door removes itself, then the engine remeasures against a page that is
      no longer behind an overlay */

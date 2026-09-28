@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>no photography permitted</title>
+<title>on loan, indefinitely</title>
 <meta name="description" content="A private exhibition.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23FDF6F0'/><circle cx='16' cy='16' r='7' fill='%23B04A2F'/></svg>">
@@ -44,23 +44,10 @@
 
 <!-- ═══ CHROME · an index of objects, and it jumps ═══════════════════════════ -->
 <header class="chrome">
-  <p class="chrome__mark" id="mark">no photography <span>permitted</span></p>
+  <p class="chrome__mark" id="mark">on <span>loan, indefinitely</span></p>
   <button class="chrome__btn" id="tab-collection" aria-current="true">photos</button>
   <button class="chrome__btn" id="tab-puzzle">puzzle</button>
-  <button class="chrome__btn" id="index-toggle" aria-expanded="false" aria-controls="index">jump to</button>
 </header>
-
-<nav class="index" id="index" aria-label="Index of objects" hidden>
-  <p class="index__title">jump to</p>
-  <ul class="index__list">
-    <li><button class="index__link" data-jump="room-i">the first one <span class="index__count">1</span></button></li>
-    <li><button class="index__link" data-jump="room-ii">the long wall <span class="index__count">6</span></button></li>
-    <li><button class="index__link" data-jump="room-iii">small things <span class="index__count">3</span></button></li>
-    <li><button class="index__link" data-jump="room-iv">everything at once <span class="index__count">7</span></button></li>
-    <li><button class="index__link" data-jump="room-v">the big one <span class="index__count">1</span></button></li>
-    <li><button class="index__link" data-jump="puzzle">the puzzle <span class="index__count">22</span></button></li>
-  </ul>
-</nav>
 
 <main>
 <!-- ═══════════════════════════════════════════════════════════════════════════
@@ -84,7 +71,7 @@
       <div class="vestibule__plate">
         <p class="vestibule__room">start here</p>
         <h2 class="vestibule__hed">hi. this is all you.</h2>
-        <p class="vestibule__sub" id="intro-count">keep going.</p>
+        <p class="vestibule__sub">some of my favorite memories of you, us, and all of us.</p>
       </div>
     </div>
   </section>
@@ -100,7 +87,7 @@
         <div>
           <p class="rail__eyebrow">the long wall</p>
           <h2>it keeps going</h2>
-          <p>drag it, swipe it, or poke the arrows. there is more than fits.</p>
+          <p>drag, swipe, or poke the arrows</p>
         </div>
         <div class="wall__nav">
           <button class="wall__arrow" type="button" data-wall="-1" aria-label="Back along the wall" aria-controls="wall-rail">
@@ -116,8 +103,8 @@
            aria-label="The long wall. Six photographs, scrolls sideways.">
         <!-- objects injected here -->
         <div class="rail__tail">
-          <p>that is the wall.</p>
-          <p>three small ones next.</p>
+          <p>that's the wall</p>
+          <p>keep scrolling down now!</p>
         </div>
       </div>
 
@@ -138,7 +125,7 @@
   <section class="room room--iv" id="room-iv" data-sc-act="flow">
     <div class="salon__head">
       <h2>everything at once</h2>
-      <p>no order to these. no theme, no reason. just a lot of you.</p>
+      <p>no order to these. just a lot of you.</p>
     </div>
     <div class="salon__stage" id="salon-stage">
       <div class="salon" id="salon" data-objects="IV"></div>
@@ -154,7 +141,7 @@
   <section class="room room--close" id="room-close" data-sc-act="flow">
     <div class="inquiry" data-sc-in>
       <p class="inquiry__hand">on loan, indefinitely</p>
-      <p class="inquiry__sub" id="close-coll">yours, obviously</p>
+      <p class="inquiry__sub" id="close-coll">yours (obviously)</p>
       <button class="inquiry__cta" id="close-cta">there is a puzzle &rarr;</button>
     </div>
   </section>

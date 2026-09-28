@@ -17,7 +17,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 window.PHOTOS = [
-  { n: "01", room: "I", src: "assets/photos/01-110-1091.jpg", w: 1600, h: 1200,
+  { n: "01", room: "IV", src: "assets/photos/01-110-1091.jpg", w: 1600, h: 1200,
     caption: "write something here", when: "sep 2025",
     alt: "Photo, sep 2025", from: "110_1091.JPG" },
   { n: "02", room: "II", src: "assets/photos/02-img-0967.jpg", w: 1600, h: 1200,
@@ -26,7 +26,7 @@ window.PHOTOS = [
   { n: "03", room: "II", src: "assets/photos/03-img-1343.jpg", w: 1600, h: 1200,
     caption: "write something here", when: "nov 2025",
     alt: "Photo, nov 2025", from: "IMG_1343.HEIC" },
-  { n: "04", room: "II", src: "assets/photos/04-img-1338.gif", w: 400, h: 226,
+  { n: "04", room: "II", src: "assets/photos/04-img-1338.gif", w: 360, h: 202,
     caption: "write something here", when: "nov 2025",
     alt: "Short clip, nov 2025", from: "IMG_1338.MOV" },
   { n: "05", room: "II", src: "assets/photos/05-img-1455.jpg", w: 1600, h: 1200,
@@ -44,7 +44,7 @@ window.PHOTOS = [
   { n: "09", room: "III", src: "assets/photos/09-img-4242.jpg", w: 1600, h: 1200,
     caption: "write something here", when: "jan 2026",
     alt: "Photo, jan 2026", from: "IMG_4242.HEIC" },
-  { n: "10", room: "III", src: "assets/photos/10-img-0376.jpg", w: 1200, h: 1600,
+  { n: "10", room: "I", src: "assets/photos/10-img-0376.jpg", w: 1200, h: 1600,
     caption: "write something here", when: "jan 2026",
     alt: "Photo, jan 2026", from: "IMG_0376.HEIC" },
   { n: "11", room: "IV", src: "assets/photos/11-img-4413.jpg", w: 1200, h: 1600,
@@ -71,10 +71,10 @@ window.PHOTOS = [
   { n: "18", room: "IV", src: "assets/photos/18-img-6002.jpg", w: 1200, h: 1600,
     caption: "write something here", when: "jul 2026",
     alt: "Photo, jul 2026", from: "IMG_6002.HEIC" },
-  { n: "19", room: "V", src: "assets/photos/19-img-5425.jpg", w: 1600, h: 1200,
+  { n: "19", room: "III", src: "assets/photos/19-img-5425.jpg", w: 1600, h: 1200,
     caption: "write something here", when: "aug 2026",
     alt: "Photo, aug 2026", from: "IMG_5425.HEIC" },
-  { n: "20", room: "IV", src: "assets/photos/20-29d2e898-79c5-4eaf-970e-1eb4.gif", w: 300, h: 400,
+  { n: "20", room: "V", src: "assets/photos/20-29d2e898-79c5-4eaf-970e-1eb4.gif", w: 420, h: 560,
     caption: "write something here", when: "sep 2026",
     alt: "Short clip, sep 2026", from: "29D2E898-79C5-4EAF-970E-1EB41D7C6DA6.MP4" },
 ];
