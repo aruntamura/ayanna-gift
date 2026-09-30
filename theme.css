@@ -602,14 +602,12 @@ body.is-locked { overflow: hidden; }
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .5);
   transform: translateX(-50%) rotate(-3deg);
 }
+/* The sign-off is the whole note now, so it carries the size on its own and
+   needs the breathing room the second line used to provide. */
 .inquiry__hand {
   font-family: var(--font-hand); font-weight: 600;
-  font-size: clamp(2rem, 5vw, 2.9rem); line-height: 1.1;
-  color: var(--sc-ink); margin: 0 0 var(--sc-3); text-wrap: balance;
-}
-.inquiry__sub {
-  font-family: var(--font-hand); font-size: 1.4rem;
-  color: var(--sc-ink-soft); margin: 0 0 var(--sc-6);
+  font-size: clamp(2.3rem, 6vw, 3.4rem); line-height: 1.1;
+  color: var(--sc-ink); margin: 0 0 var(--sc-6); text-wrap: balance;
 }
 .inquiry__cta {
   display: inline-block;
