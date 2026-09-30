@@ -183,7 +183,7 @@
   if (C.NAME) {
     document.title = C.MARK + " · for " + C.NAME;
     document.getElementById("xw-solved-sub").textContent =
-      "every single one was about you, " + C.NAME + ".";
+      "they were all about you, " + C.NAME + ".";
   }
   /* The note at the end is signed by whoever made this, not by whoever it is
      for. Getting those two the same way round is the whole point of it. */

@@ -211,8 +211,11 @@ const gridInfo = await page.evaluate(() => {
   const cells = document.querySelectorAll('.xw__cell:not(.xw__cell--block)');
   const clues = document.querySelectorAll('.clue');
   const r = document.getElementById('xw').getBoundingClientRect();
+  const box = document.querySelector('.grid__scroll');
   return { cells: cells.length, clues: clues.length, gridW: Math.round(r.width),
-           overflowsViewport: r.width > innerWidth };
+           scrollBoxW: Math.round(box.clientWidth),
+           needsSideScroll: box.scrollWidth > box.clientWidth + 2,
+           cell: getComputedStyle(document.getElementById('xw')).getPropertyValue('--cell').trim() };
 });
 // type into the first entry
 await page.click('.xw__cell:not(.xw__cell--block)');

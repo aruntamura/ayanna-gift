@@ -66,6 +66,23 @@
     cellEls[id(+el.dataset.r, +el.dataset.c)] = el;
   });
 
+  /* The grid grows and shrinks whenever the answers change, so the cell size
+     is computed from the real column count rather than fixed in CSS. An 18
+     wide grid at the old floor came to 405px on a 390px phone: just wide
+     enough to need sideways scrolling, which reads as broken rather than as
+     intentional. Below 18px a square is too small for a thumb, so past that
+     it is allowed to scroll instead. */
+  function sizeGrid() {
+    var box = host.parentElement;
+    var avail = (box ? box.clientWidth : window.innerWidth) - 2;
+    if (avail <= 0) return;
+    var cell = Math.max(18, Math.min(34, Math.floor(avail / W)));
+    host.style.setProperty("--cell", cell + "px");
+  }
+  window.addEventListener("resize", sizeGrid, { passive: true });
+  window.addEventListener("fsx:view", sizeGrid);
+  window.addEventListener("fsx:open", sizeGrid);
+
   /* ── clue lists ─────────────────────────────────────────────────────────── */
   var clueEls = {};
   ["across", "down"].forEach(function (dir) {
@@ -287,6 +304,8 @@
       Object.keys(cellEls).forEach(function (k) { cellEls[k].classList.remove("xw__cell--solved"); });
     }
   }
+
+  sizeGrid();
 
   /* start on the first across entry */
   var first = entries.filter(function (e) { return e.dir === "across"; })
